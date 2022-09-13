@@ -40,7 +40,7 @@ export interface SwapParameters {
   /**
    * The arguments to pass to the method, all hex encoded.
    */
-  args: (BigNumberish | string)[]
+  args: (string)[]
 }
 
 /**
