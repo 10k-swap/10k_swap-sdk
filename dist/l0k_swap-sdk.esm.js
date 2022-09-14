@@ -1334,5 +1334,5 @@ var Router = /*#__PURE__*/function () {
   return Router;
 }();
 
-export { FACTORY_ADDRESSES, Fraction, InsufficientInputAmountError, InsufficientReservesError, MINIMUM_LIQUIDITY, Pair, Percent, Price, Rounding, Route, Router, Token, TokenAmount, Trade, TradeType, currencyEquals, getPairAddress, inputOutputComparator, isEqualAddress, parseBigintIsh, sortedInsert, sortsBefore, sqrt, tradeComparator, validateAndParseAddress, validateSolidityTypeInstance };
+export { CONTRACT_ADDRESS_PREFIX, FACTORY_ADDRESSES, FEES_DENOMINATOR, FEES_NUMERATOR, FIVE, Fraction, InsufficientInputAmountError, InsufficientReservesError, MINIMUM_LIQUIDITY, ONE, PAIR_CONTRACT_CLASS_HASH, Pair, Percent, Price, Rounding, Route, Router, SOLIDITY_TYPE_MAXIMA, SolidityType, TEN, THREE, TWO, Token, TokenAmount, Trade, TradeType, ZERO, _100, currencyEquals, getPairAddress, inputOutputComparator, isEqualAddress, parseBigintIsh, sortedInsert, sortsBefore, sqrt, tradeComparator, validateAndParseAddress, validateSolidityTypeInstance };
 //# sourceMappingURL=l0k_swap-sdk.esm.js.map

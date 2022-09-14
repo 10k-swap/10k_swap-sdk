@@ -40,14 +40,13 @@ var TEN = /*#__PURE__*/JSBI.BigInt(10);
 var _100 = /*#__PURE__*/JSBI.BigInt(100);
 var FEES_NUMERATOR = /*#__PURE__*/JSBI.BigInt(9970);
 var FEES_DENOMINATOR = /*#__PURE__*/JSBI.BigInt(10000);
-var SolidityType;
 
 (function (SolidityType) {
   SolidityType["uint8"] = "uint8";
   SolidityType["uint256"] = "uint256";
-})(SolidityType || (SolidityType = {}));
+})(exports.SolidityType || (exports.SolidityType = {}));
 
-var SOLIDITY_TYPE_MAXIMA = (_SOLIDITY_TYPE_MAXIMA = {}, _SOLIDITY_TYPE_MAXIMA[SolidityType.uint8] = /*#__PURE__*/JSBI.BigInt('0xff'), _SOLIDITY_TYPE_MAXIMA[SolidityType.uint256] = /*#__PURE__*/JSBI.BigInt('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'), _SOLIDITY_TYPE_MAXIMA);
+var SOLIDITY_TYPE_MAXIMA = (_SOLIDITY_TYPE_MAXIMA = {}, _SOLIDITY_TYPE_MAXIMA[exports.SolidityType.uint8] = /*#__PURE__*/JSBI.BigInt('0xff'), _SOLIDITY_TYPE_MAXIMA[exports.SolidityType.uint256] = /*#__PURE__*/JSBI.BigInt('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'), _SOLIDITY_TYPE_MAXIMA);
 var PAIR_CONTRACT_CLASS_HASH = '0x231adde42526bad434ca2eb983efdd64472638702f87f97e6e3c084f264e06f';
 var FACTORY_ADDRESSES = (_FACTORY_ADDRESSES = {}, _FACTORY_ADDRESSES[constants.StarknetChainId.MAINNET] = '', _FACTORY_ADDRESSES[constants.StarknetChainId.TESTNET] = '0x06c31f39524388c982045988de3788530605ed08b10389def2e7b1dd09d19308', _FACTORY_ADDRESSES);
 var CONTRACT_ADDRESS_PREFIX = /*#__PURE__*/shortString.encodeShortString('STARKNET_CONTRACT_ADDRESS');
@@ -286,7 +285,7 @@ function parseBigintIsh(bigintIsh) {
 } // mock the on-chain sqrt function
 
 function sqrt(y) {
-  validateSolidityTypeInstance(y, SolidityType.uint256);
+  validateSolidityTypeInstance(y, exports.SolidityType.uint256);
   var z = ZERO;
   var x;
 
@@ -360,7 +359,7 @@ function sortsBefore(addressA, addressB) {
 
 var Token = /*#__PURE__*/function () {
   function Token(chainId, address, decimals, symbol, name) {
-    validateSolidityTypeInstance(JSBI.BigInt(decimals), SolidityType.uint8);
+    validateSolidityTypeInstance(JSBI.BigInt(decimals), exports.SolidityType.uint8);
     this.decimals = decimals;
     this.symbol = symbol;
     this.name = name;
@@ -546,7 +545,7 @@ var TokenAmount = /*#__PURE__*/function (_Fraction) {
     var _this;
 
     var parsedAmount = parseBigintIsh(amount);
-    validateSolidityTypeInstance(parsedAmount, SolidityType.uint256);
+    validateSolidityTypeInstance(parsedAmount, exports.SolidityType.uint256);
     _this = _Fraction.call(this, parsedAmount, JSBI.exponentiate(TEN, JSBI.BigInt(token.decimals))) || this;
     _this.token = token;
     return _this;
@@ -1342,19 +1341,31 @@ Object.defineProperty(exports, 'ChainId', {
     return constants.StarknetChainId;
   }
 });
+exports.CONTRACT_ADDRESS_PREFIX = CONTRACT_ADDRESS_PREFIX;
 exports.FACTORY_ADDRESSES = FACTORY_ADDRESSES;
+exports.FEES_DENOMINATOR = FEES_DENOMINATOR;
+exports.FEES_NUMERATOR = FEES_NUMERATOR;
+exports.FIVE = FIVE;
 exports.Fraction = Fraction;
 exports.InsufficientInputAmountError = InsufficientInputAmountError;
 exports.InsufficientReservesError = InsufficientReservesError;
 exports.MINIMUM_LIQUIDITY = MINIMUM_LIQUIDITY;
+exports.ONE = ONE;
+exports.PAIR_CONTRACT_CLASS_HASH = PAIR_CONTRACT_CLASS_HASH;
 exports.Pair = Pair;
 exports.Percent = Percent;
 exports.Price = Price;
 exports.Route = Route;
 exports.Router = Router;
+exports.SOLIDITY_TYPE_MAXIMA = SOLIDITY_TYPE_MAXIMA;
+exports.TEN = TEN;
+exports.THREE = THREE;
+exports.TWO = TWO;
 exports.Token = Token;
 exports.TokenAmount = TokenAmount;
 exports.Trade = Trade;
+exports.ZERO = ZERO;
+exports._100 = _100;
 exports.currencyEquals = currencyEquals;
 exports.getPairAddress = getPairAddress;
 exports.inputOutputComparator = inputOutputComparator;
