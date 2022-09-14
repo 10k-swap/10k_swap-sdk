@@ -1,12 +1,11 @@
 import invariant from 'tiny-invariant'
 import JSBI from 'jsbi'
+import { toBN } from 'starknet/utils/number'
+import { computeHashOnElements, pedersen } from 'starknet/dist/utils/hash'
 import { validateAndParseAddress as getAddress } from 'starknet/utils/address'
 
-import { BigintIsh, ZERO, ONE, TWO, THREE, SolidityType, SOLIDITY_TYPE_MAXIMA, FACTORY_ADDRESSES, PAIR_CONTRACT_CLASS_HASH } from './constants'
-import { computeHashOnElements, pedersen } from 'starknet/dist/utils/hash'
+import { BigintIsh, ZERO, ONE, TWO, THREE, SolidityType, SOLIDITY_TYPE_MAXIMA, FACTORY_ADDRESSES, PAIR_CONTRACT_CLASS_HASH, CONTRACT_ADDRESS_PREFIX } from './constants'
 import { Token } from '.'
-import { shortString } from 'starknet'
-import { toBN } from 'starknet/utils/number'
 
 export function validateSolidityTypeInstance(value: JSBI, solidityType: SolidityType): void {
   invariant(JSBI.greaterThanOrEqual(value, ZERO), `${value} is not a ${solidityType}.`)
@@ -82,7 +81,6 @@ export function sortedInsert<T>(items: T[], add: T, maxSize: number, comparator:
 
 export function getPairAddress(tokenA: Token, tokenB: Token) {
   const tokens = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA] // does safety checksr
-  const CONTRACT_ADDRESS_PREFIX = shortString.encodeShortString('STARKNET_CONTRACT_ADDRESS')
   const salt = pedersen([tokens[0].address, tokens[1].address])
   const constructorCalldataHash = computeHashOnElements([])
 
@@ -97,4 +95,8 @@ export function getPairAddress(tokenA: Token, tokenB: Token) {
 
 export function isEqualAddress(addressA: string, addressB: string): boolean {
   return toBN(addressA).eq(toBN(addressB))
+}
+
+export function sortsBefore(addressA: string, addressB: string) {
+  return toBN(addressA).lt(toBN(addressB))
 }

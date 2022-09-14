@@ -2,7 +2,6 @@ import { TradeType } from './constants'
 import invariant from 'tiny-invariant'
 import { bnToUint256, Uint256 } from 'starknet/dist/utils/uint256'
 import { Percent, Trade } from './entities'
-import { BigNumberish } from 'starknet/utils/number'
 
 /**
  * Options for producing the arguments to send call to the router.

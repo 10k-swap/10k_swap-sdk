@@ -1,7 +1,7 @@
 import invariant from 'tiny-invariant'
 import JSBI from 'jsbi'
 import { ChainId, SolidityType } from '../constants'
-import { isEqualAddress, validateAndParseAddress, validateSolidityTypeInstance } from '../utils'
+import { isEqualAddress, sortsBefore, validateAndParseAddress, validateSolidityTypeInstance } from '../utils'
 
 /**
  * Represents an ERC20 token with a unique address and some metadata.
@@ -44,7 +44,8 @@ export class Token {
   public sortsBefore(other: Token): boolean {
     invariant(this.chainId === other.chainId, 'CHAIN_IDS')
     invariant(this.address !== other.address, 'ADDRESSES')
-    return this.address.toLowerCase() < other.address.toLowerCase()
+
+    return sortsBefore(this.address, other.address)
   }
 }
 

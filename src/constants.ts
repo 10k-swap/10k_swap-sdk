@@ -1,4 +1,5 @@
 import JSBI from 'jsbi'
+import { encodeShortString } from 'starknet/utils/shortString'
 import { StarknetChainId } from 'starknet/constants'
 
 // exports for external consumption
@@ -48,3 +49,5 @@ export const FACTORY_ADDRESSES: {
   [StarknetChainId.MAINNET]: '',
   [StarknetChainId.TESTNET]: '0x06c31f39524388c982045988de3788530605ed08b10389def2e7b1dd09d19308',
 }
+
+export const CONTRACT_ADDRESS_PREFIX = encodeShortString('STARKNET_CONTRACT_ADDRESS')
