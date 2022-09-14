@@ -6,3 +6,4 @@ export { ChainId, TradeType, Rounding, MINIMUM_LIQUIDITY, FACTORY_ADDRESSES } fr
 export * from './errors'
 export * from './entities'
 export * from './router'
+export * from './utils'

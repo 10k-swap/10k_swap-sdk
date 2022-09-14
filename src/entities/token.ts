@@ -1,7 +1,7 @@
 import invariant from 'tiny-invariant'
 import JSBI from 'jsbi'
 import { ChainId, SolidityType } from '../constants'
-import { validateAndParseAddress, validateSolidityTypeInstance } from '../utils'
+import { isEqualAddress, validateAndParseAddress, validateSolidityTypeInstance } from '../utils'
 
 /**
  * Represents an ERC20 token with a unique address and some metadata.
@@ -32,7 +32,7 @@ export class Token {
     if (this === other) {
       return true
     }
-    return this.chainId === other.chainId && this.address === other.address
+    return this.chainId === other.chainId && isEqualAddress(this.address, other.address)
   }
 
   /**

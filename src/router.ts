@@ -67,7 +67,7 @@ export abstract class Router {
     const useFeeOnTransfer = Boolean(options.feeOnTransfer)
 
     let methodName: string
-    let args: (BigNumberish | string)[]
+    let args: (string)[]
     switch (trade.tradeType) {
       case TradeType.EXACT_INPUT:
         methodName = useFeeOnTransfer ? 'swapExactTokensForTokensSupportingFeeOnTransferTokens' : 'swapExactTokensForTokens'

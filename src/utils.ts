@@ -6,6 +6,7 @@ import { BigintIsh, ZERO, ONE, TWO, THREE, SolidityType, SOLIDITY_TYPE_MAXIMA, F
 import { computeHashOnElements, pedersen } from 'starknet/dist/utils/hash'
 import { Token } from '.'
 import { shortString } from 'starknet'
+import { toBN } from 'starknet/utils/number'
 
 export function validateSolidityTypeInstance(value: JSBI, solidityType: SolidityType): void {
   invariant(JSBI.greaterThanOrEqual(value, ZERO), `${value} is not a ${solidityType}.`)
@@ -92,4 +93,8 @@ export function getPairAddress(tokenA: Token, tokenB: Token) {
     PAIR_CONTRACT_CLASS_HASH,
     constructorCalldataHash,
   ])
+}
+
+export function isEqualAddress(addressA: string, addressB: string): boolean {
+  return toBN(addressA).eq(toBN(addressB))
 }
