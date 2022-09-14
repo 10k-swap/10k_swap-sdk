@@ -2294,6 +2294,13 @@
   dependencies:
     "cross-spawn" "^7.0.0"
 
+"cross-fetch@^3.1.5":
+  "integrity" "sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw=="
+  "resolved" "https://registry.npmjs.org/cross-fetch/-/cross-fetch-3.1.5.tgz"
+  "version" "3.1.5"
+  dependencies:
+    "node-fetch" "2.6.7"
+
 "cross-spawn@^6.0.0", "cross-spawn@^6.0.5":
   "integrity" "sha512-eTVLrBSt7fjbDygz805pMnstIs2VTBNkRm0qxZd+M7A5XDdxVRWO5MxGBXZhjY4cqLYLdtrGqRf8mBPmzwSpWQ=="
   "resolved" "https://registry.npmjs.org/cross-spawn/-/cross-spawn-6.0.5.tgz"
@@ -3775,14 +3782,6 @@
   "resolved" "https://registry.npmjs.org/isobject/-/isobject-3.0.1.tgz"
   "version" "3.0.1"
 
-"isomorphic-fetch@^3.0.0":
-  "integrity" "sha512-qvUtwJ3j6qwsF3jLxkZ72qCgjMysPzDfeV240JHiGZsANBYd+EEuu35v7dfrJ9Up0Ak07D7GGSkGhCHTqg/5wA=="
-  "resolved" "https://registry.npmjs.org/isomorphic-fetch/-/isomorphic-fetch-3.0.0.tgz"
-  "version" "3.0.0"
-  dependencies:
-    "node-fetch" "^2.6.1"
-    "whatwg-fetch" "^3.4.1"
-
 "isstream@~0.1.2":
   "integrity" "sha512-Yljz7ffyPbrLpLngrMtZ7NduUgVvi6wG9RJ9IUcyCd59YQ911PBJphODUcbOVbqYfxe1wuYf/LJ8PauMRwsM/g=="
   "resolved" "https://registry.npmjs.org/isstream/-/isstream-0.1.2.tgz"
@@ -4696,7 +4695,7 @@
   dependencies:
     "lower-case" "^1.1.1"
 
-"node-fetch@^2.6.1":
+"node-fetch@2.6.7":
   "integrity" "sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ=="
   "resolved" "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.7.tgz"
   "version" "2.6.7"
@@ -5899,17 +5898,17 @@
   dependencies:
     "escape-string-regexp" "^2.0.0"
 
-"starknet@^4.4.2":
-  "integrity" "sha512-tSQNwsx0+27pf2oi1fc1bgGDQO7cHFTWBIm+HLT6yAGs53Y/YRrc6jaxbcEl/826gv36ck53pqmF+85t1ILNMg=="
-  "resolved" "https://registry.npmjs.org/starknet/-/starknet-4.4.2.tgz"
-  "version" "4.4.2"
+"starknet@^3.5":
+  "integrity" "sha512-1iUJdGtRDu2j3G8sS+yzRhp9O3O5Dr803oDfrm234Qmn05JTh5bU/wZwFPw9zWmMI0jyNZgjS+8dxPpBcpLgrQ=="
+  "resolved" "https://registry.npmjs.org/starknet/-/starknet-3.19.0.tgz"
+  "version" "3.19.0"
   dependencies:
     "@ethersproject/bytes" "^5.6.1"
     "bn.js" "^5.2.1"
+    "cross-fetch" "^3.1.5"
     "elliptic" "^6.5.4"
     "ethereum-cryptography" "^1.0.3"
     "hash.js" "^1.1.7"
-    "isomorphic-fetch" "^3.0.0"
     "json-bigint" "^1.0.0"
     "minimalistic-assert" "^1.0.1"
     "pako" "^2.0.4"
@@ -6565,11 +6564,6 @@
   "version" "1.0.5"
   dependencies:
     "iconv-lite" "0.4.24"
-
-"whatwg-fetch@^3.4.1":
-  "integrity" "sha512-bJlen0FcuU/0EMLrdbJ7zOnW6ITZLrZMIarMUVmdKtsGvZna8vxKYaexICWPfZ8qwf9fzNq+UEIZrnSaApt6RA=="
-  "resolved" "https://registry.npmjs.org/whatwg-fetch/-/whatwg-fetch-3.6.2.tgz"
-  "version" "3.6.2"
 
 "whatwg-mimetype@^2.1.0", "whatwg-mimetype@^2.2.0":
   "integrity" "sha512-M4yMwr6mAnQz76TbJm914+gPpB/nCwvZbJU28cUD6dR004SAxDLOOSUaB1JDRqLtaOV/vi0IC5lEAGFgrjGv/g=="
