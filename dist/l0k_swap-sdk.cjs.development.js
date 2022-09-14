@@ -5,9 +5,9 @@ Object.defineProperty(exports, '__esModule', { value: true });
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var JSBI = _interopDefault(require('jsbi'));
+var invariant = _interopDefault(require('tiny-invariant'));
 var shortString = require('starknet/utils/shortString');
 var constants = require('starknet/constants');
-var invariant = _interopDefault(require('tiny-invariant'));
 var number = require('starknet/utils/number');
 var hash = require('starknet/dist/utils/hash');
 var address = require('starknet/utils/address');
@@ -15,41 +15,6 @@ var toFormat = _interopDefault(require('toformat'));
 var _Decimal = _interopDefault(require('decimal.js-light'));
 var _Big = _interopDefault(require('big.js'));
 var uint256 = require('starknet/dist/utils/uint256');
-
-var _SOLIDITY_TYPE_MAXIMA, _FACTORY_ADDRESSES;
-
-(function (TradeType) {
-  TradeType[TradeType["EXACT_INPUT"] = 0] = "EXACT_INPUT";
-  TradeType[TradeType["EXACT_OUTPUT"] = 1] = "EXACT_OUTPUT";
-})(exports.TradeType || (exports.TradeType = {}));
-
-(function (Rounding) {
-  Rounding[Rounding["ROUND_DOWN"] = 0] = "ROUND_DOWN";
-  Rounding[Rounding["ROUND_HALF_UP"] = 1] = "ROUND_HALF_UP";
-  Rounding[Rounding["ROUND_UP"] = 2] = "ROUND_UP";
-})(exports.Rounding || (exports.Rounding = {}));
-
-var MINIMUM_LIQUIDITY = /*#__PURE__*/JSBI.BigInt(1000); // exports for internal consumption
-
-var ZERO = /*#__PURE__*/JSBI.BigInt(0);
-var ONE = /*#__PURE__*/JSBI.BigInt(1);
-var TWO = /*#__PURE__*/JSBI.BigInt(2);
-var THREE = /*#__PURE__*/JSBI.BigInt(3);
-var FIVE = /*#__PURE__*/JSBI.BigInt(5);
-var TEN = /*#__PURE__*/JSBI.BigInt(10);
-var _100 = /*#__PURE__*/JSBI.BigInt(100);
-var FEES_NUMERATOR = /*#__PURE__*/JSBI.BigInt(9970);
-var FEES_DENOMINATOR = /*#__PURE__*/JSBI.BigInt(10000);
-
-(function (SolidityType) {
-  SolidityType["uint8"] = "uint8";
-  SolidityType["uint256"] = "uint256";
-})(exports.SolidityType || (exports.SolidityType = {}));
-
-var SOLIDITY_TYPE_MAXIMA = (_SOLIDITY_TYPE_MAXIMA = {}, _SOLIDITY_TYPE_MAXIMA[exports.SolidityType.uint8] = /*#__PURE__*/JSBI.BigInt('0xff'), _SOLIDITY_TYPE_MAXIMA[exports.SolidityType.uint256] = /*#__PURE__*/JSBI.BigInt('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'), _SOLIDITY_TYPE_MAXIMA);
-var PAIR_CONTRACT_CLASS_HASH = '0x231adde42526bad434ca2eb983efdd64472638702f87f97e6e3c084f264e06f';
-var FACTORY_ADDRESSES = (_FACTORY_ADDRESSES = {}, _FACTORY_ADDRESSES[constants.StarknetChainId.MAINNET] = '', _FACTORY_ADDRESSES[constants.StarknetChainId.TESTNET] = '0x06c31f39524388c982045988de3788530605ed08b10389def2e7b1dd09d19308', _FACTORY_ADDRESSES);
-var CONTRACT_ADDRESS_PREFIX = /*#__PURE__*/shortString.encodeShortString('STARKNET_CONTRACT_ADDRESS');
 
 function _defineProperties(target, props) {
   for (var i = 0; i < props.length; i++) {
@@ -265,6 +230,41 @@ var InsufficientInputAmountError = /*#__PURE__*/function (_Error2) {
 
   return InsufficientInputAmountError;
 }( /*#__PURE__*/_wrapNativeSuper(Error));
+
+var _SOLIDITY_TYPE_MAXIMA, _FACTORY_ADDRESSES;
+
+(function (TradeType) {
+  TradeType[TradeType["EXACT_INPUT"] = 0] = "EXACT_INPUT";
+  TradeType[TradeType["EXACT_OUTPUT"] = 1] = "EXACT_OUTPUT";
+})(exports.TradeType || (exports.TradeType = {}));
+
+(function (Rounding) {
+  Rounding[Rounding["ROUND_DOWN"] = 0] = "ROUND_DOWN";
+  Rounding[Rounding["ROUND_HALF_UP"] = 1] = "ROUND_HALF_UP";
+  Rounding[Rounding["ROUND_UP"] = 2] = "ROUND_UP";
+})(exports.Rounding || (exports.Rounding = {}));
+
+var MINIMUM_LIQUIDITY = /*#__PURE__*/JSBI.BigInt(1000); // exports for internal consumption
+
+var ZERO = /*#__PURE__*/JSBI.BigInt(0);
+var ONE = /*#__PURE__*/JSBI.BigInt(1);
+var TWO = /*#__PURE__*/JSBI.BigInt(2);
+var THREE = /*#__PURE__*/JSBI.BigInt(3);
+var FIVE = /*#__PURE__*/JSBI.BigInt(5);
+var TEN = /*#__PURE__*/JSBI.BigInt(10);
+var _100 = /*#__PURE__*/JSBI.BigInt(100);
+var FEES_NUMERATOR = /*#__PURE__*/JSBI.BigInt(9970);
+var FEES_DENOMINATOR = /*#__PURE__*/JSBI.BigInt(10000);
+
+(function (SolidityType) {
+  SolidityType["uint8"] = "uint8";
+  SolidityType["uint256"] = "uint256";
+})(exports.SolidityType || (exports.SolidityType = {}));
+
+var SOLIDITY_TYPE_MAXIMA = (_SOLIDITY_TYPE_MAXIMA = {}, _SOLIDITY_TYPE_MAXIMA[exports.SolidityType.uint8] = /*#__PURE__*/JSBI.BigInt('0xff'), _SOLIDITY_TYPE_MAXIMA[exports.SolidityType.uint256] = /*#__PURE__*/JSBI.BigInt('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'), _SOLIDITY_TYPE_MAXIMA);
+var PAIR_CONTRACT_CLASS_HASH = '0x231adde42526bad434ca2eb983efdd64472638702f87f97e6e3c084f264e06f';
+var FACTORY_ADDRESSES = (_FACTORY_ADDRESSES = {}, _FACTORY_ADDRESSES[constants.StarknetChainId.MAINNET] = '', _FACTORY_ADDRESSES[constants.StarknetChainId.TESTNET] = '0x06c31f39524388c982045988de3788530605ed08b10389def2e7b1dd09d19308', _FACTORY_ADDRESSES);
+var CONTRACT_ADDRESS_PREFIX = /*#__PURE__*/shortString.encodeShortString('STARKNET_CONTRACT_ADDRESS');
 
 function validateSolidityTypeInstance(value, solidityType) {
   !JSBI.greaterThanOrEqual(value, ZERO) ?  invariant(false, value + " is not a " + solidityType + ".")  : void 0;
