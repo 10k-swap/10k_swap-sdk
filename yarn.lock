@@ -5898,10 +5898,10 @@
   dependencies:
     "escape-string-regexp" "^2.0.0"
 
-"starknet@^3.5":
-  "integrity" "sha512-1iUJdGtRDu2j3G8sS+yzRhp9O3O5Dr803oDfrm234Qmn05JTh5bU/wZwFPw9zWmMI0jyNZgjS+8dxPpBcpLgrQ=="
-  "resolved" "https://registry.npmjs.org/starknet/-/starknet-3.19.0.tgz"
-  "version" "3.19.0"
+"starknet@3.16.0":
+  "integrity" "sha512-ehb/0ecTuKsnhx4ySfLS0YC/0RqjDeUB0svPPvBEmxNpLB/atwAhKX6g1yVVXBioE2Pa8nPCaLMCmWYT0Wxg3A=="
+  "resolved" "https://registry.npmjs.org/starknet/-/starknet-3.16.0.tgz"
+  "version" "3.16.0"
   dependencies:
     "@ethersproject/bytes" "^5.6.1"
     "bn.js" "^5.2.1"
