@@ -6,7 +6,6 @@ import invariant from 'tiny-invariant'
 import ERC20 from './abis/ERC20.json'
 import { ChainId } from './constants'
 import { Token } from './entities/token'
-// import { uint256ToBN } from 'starknet/dist/utils/uint256'
 
 const NetworkNames: { [chainId in ChainId]: 'mainnet-alpha' | 'goerli-alpha' } = {
   [ChainId.MAINNET]: 'mainnet-alpha',
@@ -19,7 +18,7 @@ let TOKEN_DECIMALS_CACHE: { [chainId: string]: { [address: string]: number } } =
   }
 }
 
-async function getDecimals(chainId: ChainId, address: string, provider: Provider,) {
+async function getDecimals(chainId: ChainId, address: string, provider: Provider): Promise<number> {
   if (typeof TOKEN_DECIMALS_CACHE?.[chainId]?.[address] === 'number') {
     return TOKEN_DECIMALS_CACHE[chainId][address]
   }
