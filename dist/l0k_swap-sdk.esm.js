@@ -11,6 +11,7 @@ import toFormat from 'toformat';
 import _Decimal from 'decimal.js-light';
 import _Big from 'big.js';
 import { bnToUint256 } from 'starknet/dist/utils/uint256';
+import { Provider, Contract } from 'starknet';
 
 function _defineProperties(target, props) {
   for (var i = 0; i < props.length; i++) {
@@ -1334,5 +1335,982 @@ var Router = /*#__PURE__*/function () {
   return Router;
 }();
 
-export { CONTRACT_ADDRESS_PREFIX, FACTORY_ADDRESSES, FEES_DENOMINATOR, FEES_NUMERATOR, FIVE, Fraction, InsufficientInputAmountError, InsufficientReservesError, MINIMUM_LIQUIDITY, ONE, PAIR_CONTRACT_CLASS_HASH, Pair, Percent, Price, Rounding, Route, Router, SOLIDITY_TYPE_MAXIMA, SolidityType, TEN, THREE, TWO, Token, TokenAmount, Trade, TradeType, ZERO, _100, currencyEquals, getPairAddress, inputOutputComparator, isEqualAddress, parseBigintIsh, sortedInsert, sortsBefore, sqrt, tradeComparator, validateAndParseAddress, validateSolidityTypeInstance };
+var l0kPairAbi = [
+	{
+		members: [
+			{
+				name: "low",
+				offset: 0,
+				type: "felt"
+			},
+			{
+				name: "high",
+				offset: 1,
+				type: "felt"
+			}
+		],
+		name: "Uint256",
+		size: 2,
+		type: "struct"
+	},
+	{
+		data: [
+			{
+				name: "from_",
+				type: "felt"
+			},
+			{
+				name: "to",
+				type: "felt"
+			},
+			{
+				name: "value",
+				type: "Uint256"
+			}
+		],
+		keys: [
+		],
+		name: "Transfer",
+		type: "event"
+	},
+	{
+		data: [
+			{
+				name: "owner",
+				type: "felt"
+			},
+			{
+				name: "spender",
+				type: "felt"
+			},
+			{
+				name: "value",
+				type: "Uint256"
+			}
+		],
+		keys: [
+		],
+		name: "Approval",
+		type: "event"
+	},
+	{
+		inputs: [
+		],
+		name: "name",
+		outputs: [
+			{
+				name: "name",
+				type: "felt"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "symbol",
+		outputs: [
+			{
+				name: "symbol",
+				type: "felt"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "totalSupply",
+		outputs: [
+			{
+				name: "totalSupply",
+				type: "Uint256"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "decimals",
+		outputs: [
+			{
+				name: "decimals",
+				type: "felt"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				name: "account",
+				type: "felt"
+			}
+		],
+		name: "balanceOf",
+		outputs: [
+			{
+				name: "balance",
+				type: "Uint256"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				name: "owner",
+				type: "felt"
+			},
+			{
+				name: "spender",
+				type: "felt"
+			}
+		],
+		name: "allowance",
+		outputs: [
+			{
+				name: "remaining",
+				type: "Uint256"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				name: "recipient",
+				type: "felt"
+			},
+			{
+				name: "amount",
+				type: "Uint256"
+			}
+		],
+		name: "transfer",
+		outputs: [
+			{
+				name: "success",
+				type: "felt"
+			}
+		],
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				name: "sender",
+				type: "felt"
+			},
+			{
+				name: "recipient",
+				type: "felt"
+			},
+			{
+				name: "amount",
+				type: "Uint256"
+			}
+		],
+		name: "transferFrom",
+		outputs: [
+			{
+				name: "success",
+				type: "felt"
+			}
+		],
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				name: "spender",
+				type: "felt"
+			},
+			{
+				name: "amount",
+				type: "Uint256"
+			}
+		],
+		name: "approve",
+		outputs: [
+			{
+				name: "success",
+				type: "felt"
+			}
+		],
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				name: "spender",
+				type: "felt"
+			},
+			{
+				name: "added_value",
+				type: "Uint256"
+			}
+		],
+		name: "increaseAllowance",
+		outputs: [
+			{
+				name: "success",
+				type: "felt"
+			}
+		],
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				name: "spender",
+				type: "felt"
+			},
+			{
+				name: "subtracted_value",
+				type: "Uint256"
+			}
+		],
+		name: "decreaseAllowance",
+		outputs: [
+			{
+				name: "success",
+				type: "felt"
+			}
+		],
+		type: "function"
+	},
+	{
+		data: [
+			{
+				name: "sender",
+				type: "felt"
+			},
+			{
+				name: "amount0",
+				type: "Uint256"
+			},
+			{
+				name: "amount1",
+				type: "Uint256"
+			}
+		],
+		keys: [
+		],
+		name: "Mint",
+		type: "event"
+	},
+	{
+		data: [
+			{
+				name: "sender",
+				type: "felt"
+			},
+			{
+				name: "amount0",
+				type: "Uint256"
+			},
+			{
+				name: "amount1",
+				type: "Uint256"
+			},
+			{
+				name: "to",
+				type: "felt"
+			}
+		],
+		keys: [
+		],
+		name: "Burn",
+		type: "event"
+	},
+	{
+		data: [
+			{
+				name: "sender",
+				type: "felt"
+			},
+			{
+				name: "amount0In",
+				type: "Uint256"
+			},
+			{
+				name: "amount1In",
+				type: "Uint256"
+			},
+			{
+				name: "amount0Out",
+				type: "Uint256"
+			},
+			{
+				name: "amount1Out",
+				type: "Uint256"
+			},
+			{
+				name: "to",
+				type: "felt"
+			}
+		],
+		keys: [
+		],
+		name: "Swap",
+		type: "event"
+	},
+	{
+		data: [
+			{
+				name: "reserve0",
+				type: "felt"
+			},
+			{
+				name: "reserve1",
+				type: "felt"
+			}
+		],
+		keys: [
+		],
+		name: "Sync",
+		type: "event"
+	},
+	{
+		inputs: [
+		],
+		name: "constructor",
+		outputs: [
+		],
+		type: "constructor"
+	},
+	{
+		inputs: [
+		],
+		name: "MINIMUM_LIQUIDITY",
+		outputs: [
+			{
+				name: "MINIMUM_LIQUIDITY",
+				type: "felt"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "factory",
+		outputs: [
+			{
+				name: "factory",
+				type: "felt"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "token0",
+		outputs: [
+			{
+				name: "token0",
+				type: "felt"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "token1",
+		outputs: [
+			{
+				name: "token1",
+				type: "felt"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "blockTimestampLast",
+		outputs: [
+			{
+				name: "blockTimestampLast",
+				type: "felt"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "price0CumulativeLast",
+		outputs: [
+			{
+				name: "price0CumulativeLast",
+				type: "Uint256"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "price1CumulativeLast",
+		outputs: [
+			{
+				name: "price1CumulativeLast",
+				type: "Uint256"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "kLast",
+		outputs: [
+			{
+				name: "kLast",
+				type: "Uint256"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "getReserves",
+		outputs: [
+			{
+				name: "reserve0",
+				type: "felt"
+			},
+			{
+				name: "reserve1",
+				type: "felt"
+			},
+			{
+				name: "blockTimestampLast",
+				type: "felt"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				name: "token0",
+				type: "felt"
+			},
+			{
+				name: "token1",
+				type: "felt"
+			}
+		],
+		name: "initialize",
+		outputs: [
+		],
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				name: "to",
+				type: "felt"
+			}
+		],
+		name: "mint",
+		outputs: [
+			{
+				name: "liquidity",
+				type: "Uint256"
+			}
+		],
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				name: "to",
+				type: "felt"
+			}
+		],
+		name: "burn",
+		outputs: [
+			{
+				name: "amount0",
+				type: "Uint256"
+			},
+			{
+				name: "amount1",
+				type: "Uint256"
+			}
+		],
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				name: "amount0Out",
+				type: "Uint256"
+			},
+			{
+				name: "amount1Out",
+				type: "Uint256"
+			},
+			{
+				name: "to",
+				type: "felt"
+			}
+		],
+		name: "swap",
+		outputs: [
+		],
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				name: "to",
+				type: "felt"
+			}
+		],
+		name: "skim",
+		outputs: [
+		],
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "sync",
+		outputs: [
+		],
+		type: "function"
+	}
+];
+
+var ERC20 = [
+	{
+		members: [
+			{
+				name: "low",
+				offset: 0,
+				type: "felt"
+			},
+			{
+				name: "high",
+				offset: 1,
+				type: "felt"
+			}
+		],
+		name: "Uint256",
+		size: 2,
+		type: "struct"
+	},
+	{
+		data: [
+			{
+				name: "from_",
+				type: "felt"
+			},
+			{
+				name: "to",
+				type: "felt"
+			},
+			{
+				name: "value",
+				type: "Uint256"
+			}
+		],
+		keys: [
+		],
+		name: "Transfer",
+		type: "event"
+	},
+	{
+		data: [
+			{
+				name: "owner",
+				type: "felt"
+			},
+			{
+				name: "spender",
+				type: "felt"
+			},
+			{
+				name: "value",
+				type: "Uint256"
+			}
+		],
+		keys: [
+		],
+		name: "Approval",
+		type: "event"
+	},
+	{
+		data: [
+			{
+				name: "previousOwner",
+				type: "felt"
+			},
+			{
+				name: "newOwner",
+				type: "felt"
+			}
+		],
+		keys: [
+		],
+		name: "OwnershipTransferred",
+		type: "event"
+	},
+	{
+		inputs: [
+			{
+				name: "name",
+				type: "felt"
+			},
+			{
+				name: "symbol",
+				type: "felt"
+			}
+		],
+		name: "constructor",
+		outputs: [
+		],
+		type: "constructor"
+	},
+	{
+		inputs: [
+		],
+		name: "name",
+		outputs: [
+			{
+				name: "name",
+				type: "felt"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "symbol",
+		outputs: [
+			{
+				name: "symbol",
+				type: "felt"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "totalSupply",
+		outputs: [
+			{
+				name: "totalSupply",
+				type: "Uint256"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "decimals",
+		outputs: [
+			{
+				name: "decimals",
+				type: "felt"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				name: "account",
+				type: "felt"
+			}
+		],
+		name: "balanceOf",
+		outputs: [
+			{
+				name: "balance",
+				type: "Uint256"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				name: "owner",
+				type: "felt"
+			},
+			{
+				name: "spender",
+				type: "felt"
+			}
+		],
+		name: "allowance",
+		outputs: [
+			{
+				name: "remaining",
+				type: "Uint256"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				name: "recipient",
+				type: "felt"
+			},
+			{
+				name: "amount",
+				type: "Uint256"
+			}
+		],
+		name: "transfer",
+		outputs: [
+			{
+				name: "success",
+				type: "felt"
+			}
+		],
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				name: "sender",
+				type: "felt"
+			},
+			{
+				name: "recipient",
+				type: "felt"
+			},
+			{
+				name: "amount",
+				type: "Uint256"
+			}
+		],
+		name: "transferFrom",
+		outputs: [
+			{
+				name: "success",
+				type: "felt"
+			}
+		],
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				name: "spender",
+				type: "felt"
+			},
+			{
+				name: "amount",
+				type: "Uint256"
+			}
+		],
+		name: "approve",
+		outputs: [
+			{
+				name: "success",
+				type: "felt"
+			}
+		],
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				name: "spender",
+				type: "felt"
+			},
+			{
+				name: "added_value",
+				type: "Uint256"
+			}
+		],
+		name: "increaseAllowance",
+		outputs: [
+			{
+				name: "success",
+				type: "felt"
+			}
+		],
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				name: "spender",
+				type: "felt"
+			},
+			{
+				name: "subtracted_value",
+				type: "Uint256"
+			}
+		],
+		name: "decreaseAllowance",
+		outputs: [
+			{
+				name: "success",
+				type: "felt"
+			}
+		],
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				name: "newOwner",
+				type: "felt"
+			}
+		],
+		name: "transferOwnership",
+		outputs: [
+		],
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "renounceOwnership",
+		outputs: [
+		],
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				name: "to",
+				type: "felt"
+			},
+			{
+				name: "amount",
+				type: "Uint256"
+			}
+		],
+		name: "mint",
+		outputs: [
+		],
+		type: "function"
+	}
+];
+
+var _NetworkNames, _TOKEN_DECIMALS_CACHE;
+
+var getDecimals = function getDecimals(chainId, address, provider) {
+  try {
+    var _TOKEN_DECIMALS_CACHE2, _TOKEN_DECIMALS_CACHE3;
+
+    if (typeof ((_TOKEN_DECIMALS_CACHE2 = TOKEN_DECIMALS_CACHE) === null || _TOKEN_DECIMALS_CACHE2 === void 0 ? void 0 : (_TOKEN_DECIMALS_CACHE3 = _TOKEN_DECIMALS_CACHE2[chainId]) === null || _TOKEN_DECIMALS_CACHE3 === void 0 ? void 0 : _TOKEN_DECIMALS_CACHE3[address]) === 'number') {
+      return Promise.resolve(TOKEN_DECIMALS_CACHE[chainId][address]);
+    }
+
+    var contract = new Contract(ERC20, address, provider);
+    return Promise.resolve(contract.call('decimals')).then(function (_ref2) {
+      var _TOKEN_DECIMALS_CACHE4, _extends2, _extends3;
+
+      var decimals = _ref2.decimals;
+      TOKEN_DECIMALS_CACHE = _extends({}, TOKEN_DECIMALS_CACHE, (_extends3 = {}, _extends3[chainId] = _extends({}, (_TOKEN_DECIMALS_CACHE4 = TOKEN_DECIMALS_CACHE) === null || _TOKEN_DECIMALS_CACHE4 === void 0 ? void 0 : _TOKEN_DECIMALS_CACHE4[chainId], (_extends2 = {}, _extends2[address] = decimals.toNumber(), _extends2)), _extends3));
+      return decimals.toNumber();
+    });
+  } catch (e) {
+    return Promise.reject(e);
+  }
+};
+
+var NetworkNames = (_NetworkNames = {}, _NetworkNames[StarknetChainId.MAINNET] = 'mainnet-alpha', _NetworkNames[StarknetChainId.TESTNET] = 'goerli-alpha', _NetworkNames);
+var TOKEN_DECIMALS_CACHE = (_TOKEN_DECIMALS_CACHE = {}, _TOKEN_DECIMALS_CACHE[StarknetChainId.TESTNET] = {
+  '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7': 18 // ETH
+
+}, _TOKEN_DECIMALS_CACHE);
+var Fetcher = /*#__PURE__*/function () {
+  /**
+   * Cannot be constructed.
+   */
+  function Fetcher() {}
+  /**
+   * Fetch information for a given token on the given chain, using the given ethers provider.
+   * @param chainId chain of the token
+   * @param address address of the token on the chain
+   * @param provider provider used to fetch the token
+   * @param symbol optional symbol of the token
+   * @param name optional name of the token
+   */
+
+
+  Fetcher.fetchTokenData = function fetchTokenData(chainId, address, provider, symbol, name) {
+    try {
+      if (provider === undefined) provider = new Provider({
+        network: NetworkNames[chainId]
+      });
+      return Promise.resolve(getDecimals(chainId, address, provider)).then(function (parsedDecimals) {
+        return new Token(chainId, address, parsedDecimals, symbol, name);
+      });
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  }
+  /**
+   * Fetches information about a pair and constructs a pair from the given two tokens.
+   * @param tokenA first token
+   * @param tokenB second token
+   * @param provider the provider to use to fetch the data
+   */
+  ;
+
+  Fetcher.fetchPairData = function fetchPairData(tokenA, tokenB, provider) {
+    try {
+      if (provider === undefined) provider = new Provider({
+        network: NetworkNames[tokenA.chainId]
+      });
+      !(tokenA.chainId === tokenB.chainId) ? process.env.NODE_ENV !== "production" ? invariant(false, 'CHAIN_ID') : invariant(false) : void 0;
+      var address = Pair.getAddress(tokenA, tokenB);
+      return Promise.resolve(new Contract(l0kPairAbi, address, provider).call('getReserves', [])).then(function (_ref) {
+        var reserves0 = _ref.reserves0,
+            reserves1 = _ref.reserves1;
+        var balances = tokenA.sortsBefore(tokenB) ? [reserves0, reserves1] : [reserves1, reserves0];
+        return new Pair(new TokenAmount(tokenA, balances[0].toString()), new TokenAmount(tokenB, balances[1].toString()));
+      });
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  };
+
+  return Fetcher;
+}();
+
+export { CONTRACT_ADDRESS_PREFIX, FACTORY_ADDRESSES, FEES_DENOMINATOR, FEES_NUMERATOR, FIVE, Fetcher, Fraction, InsufficientInputAmountError, InsufficientReservesError, MINIMUM_LIQUIDITY, ONE, PAIR_CONTRACT_CLASS_HASH, Pair, Percent, Price, Rounding, Route, Router, SOLIDITY_TYPE_MAXIMA, SolidityType, TEN, THREE, TWO, Token, TokenAmount, Trade, TradeType, ZERO, _100, currencyEquals, getPairAddress, inputOutputComparator, isEqualAddress, parseBigintIsh, sortedInsert, sortsBefore, sqrt, tradeComparator, validateAndParseAddress, validateSolidityTypeInstance };
 //# sourceMappingURL=l0k_swap-sdk.esm.js.map

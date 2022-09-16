@@ -33,7 +33,7 @@ export interface SwapParameters {
     /**
      * The arguments to pass to the method, all hex encoded.
      */
-    args: (string)[];
+    args: string[];
 }
 /**
  * Represents the Uniswap V2 Router, and has static methods for helping execute trades.
