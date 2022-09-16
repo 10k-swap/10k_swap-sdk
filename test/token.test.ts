@@ -6,9 +6,7 @@ describe('Token', () => {
 
   describe('#equals', () => {
     it('fails if address differs', () => {
-      expect(new Token(ChainId.MAINNET, ADDRESS_ONE, 18).equals(new Token(ChainId.MAINNET, ADDRESS_TWO, 18))).toBe(
-        false
-      )
+      expect(new Token(ChainId.MAINNET, ADDRESS_ONE, 18).equals(new Token(ChainId.MAINNET, ADDRESS_TWO, 18))).toBe(false)
     })
 
     it('true if only decimals differs', () => {

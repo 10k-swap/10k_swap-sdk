@@ -13,7 +13,7 @@ const DECIMAL_PERMUTATIONS: [number, number, number][] = [
   [18, 18, 18]
 ]
 const ETH = new Token(CHAIN_ID, '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7', 18, 'ETH')
-   
+
 function decimalize(amount: number, decimals: number): bigint {
   return BigInt(amount) * BigInt(10) ** BigInt(decimals)
 }
@@ -34,18 +34,9 @@ describe('entities', () => {
       let pairs: Pair[]
       it('Pair', () => {
         pairs = [
-          new Pair(
-            new TokenAmount(tokens[0], decimalize(1, tokens[0].decimals)),
-            new TokenAmount(tokens[1], decimalize(1, tokens[1].decimals))
-          ),
-          new Pair(
-            new TokenAmount(tokens[1], decimalize(1, tokens[1].decimals)),
-            new TokenAmount(tokens[2], decimalize(1, tokens[2].decimals))
-          ),
-          new Pair(
-            new TokenAmount(tokens[2], decimalize(1, tokens[2].decimals)),
-            new TokenAmount(ETH, decimalize(1234, ETH.decimals))
-          )
+          new Pair(new TokenAmount(tokens[0], decimalize(1, tokens[0].decimals)), new TokenAmount(tokens[1], decimalize(1, tokens[1].decimals))),
+          new Pair(new TokenAmount(tokens[1], decimalize(1, tokens[1].decimals)), new TokenAmount(tokens[2], decimalize(1, tokens[2].decimals))),
+          new Pair(new TokenAmount(tokens[2], decimalize(1, tokens[2].decimals)), new TokenAmount(ETH, decimalize(1234, ETH.decimals)))
         ]
       })
 
@@ -64,9 +55,9 @@ describe('entities', () => {
         expect(route.midPrice.quote(new TokenAmount(route.input, decimalize(1, route.input.decimals)))).toEqual(
           new TokenAmount(route.output, decimalize(1234, route.output.decimals))
         )
-        expect(
-          route.midPrice.invert().quote(new TokenAmount(route.output, decimalize(1234, route.output.decimals)))
-        ).toEqual(new TokenAmount(route.input, decimalize(1, route.input.decimals)))
+        expect(route.midPrice.invert().quote(new TokenAmount(route.output, decimalize(1234, route.output.decimals)))).toEqual(
+          new TokenAmount(route.input, decimalize(1, route.input.decimals))
+        )
 
         expect(route.midPrice.toSignificant(1)).toEqual('1000')
         expect(route.midPrice.toSignificant(2)).toEqual('1200')
@@ -101,12 +92,7 @@ describe('entities', () => {
         let route: Route
         it('TradeType.EXACT_INPUT', () => {
           route = new Route(
-            [
-              new Pair(
-                new TokenAmount(tokens[1], decimalize(5, tokens[1].decimals)),
-                new TokenAmount(ETH, decimalize(10, ETH.decimals))
-              )
-            ],
+            [new Pair(new TokenAmount(tokens[1], decimalize(5, tokens[1].decimals)), new TokenAmount(ETH, decimalize(10, ETH.decimals)))],
             tokens[1]
           )
           const inputAmount = new TokenAmount(tokens[1], decimalize(1, tokens[1].decimals))
@@ -156,8 +142,7 @@ describe('entities', () => {
                   new TokenAmount(tokens[1], decimalize(1, tokens[1].decimals)),
                   new TokenAmount(
                     ETH,
-                    decimalize(10, ETH.decimals) +
-                    (tokens[1].decimals === 9 ? BigInt('30090280812437312') : BigInt('30090270812437322'))
+                    decimalize(10, ETH.decimals) + (tokens[1].decimals === 9 ? BigInt('30090280812437312') : BigInt('30090270812437322'))
                   )
                 )
               ],
@@ -166,9 +151,7 @@ describe('entities', () => {
             const outputAmount = new TokenAmount(tokens[1], '1')
             const trade = new Trade(route, outputAmount, TradeType.EXACT_INPUT)
 
-            expect(trade.priceImpact.toSignificant(18)).toEqual(
-              tokens[1].decimals === 9 ? '0.300000099400899902' : '0.3000000000000001'
-            )
+            expect(trade.priceImpact.toSignificant(18)).toEqual(tokens[1].decimals === 9 ? '0.300000099400899902' : '0.3000000000000001')
           }
         })
       })

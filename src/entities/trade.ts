@@ -173,7 +173,10 @@ export class Trade {
     if (this.tradeType === TradeType.EXACT_OUTPUT) {
       return this.outputAmount
     } else {
-      const slippageAdjustedAmountOut = new Fraction(ONE).add(slippageTolerance).invert().multiply(this.outputAmount.raw).quotient
+      const slippageAdjustedAmountOut = new Fraction(ONE)
+        .add(slippageTolerance)
+        .invert()
+        .multiply(this.outputAmount.raw).quotient
       return new TokenAmount(this.outputAmount.token, slippageAdjustedAmountOut)
     }
   }
@@ -259,7 +262,7 @@ export class Trade {
           currencyOut,
           {
             maxNumResults,
-            maxHops: maxHops - 1,
+            maxHops: maxHops - 1
           },
           [...currentPairs, pair],
           originalAmountIn,
@@ -339,7 +342,7 @@ export class Trade {
           amountIn,
           {
             maxNumResults,
-            maxHops: maxHops - 1,
+            maxHops: maxHops - 1
           },
           [pair, ...currentPairs],
           originalAmountOut,

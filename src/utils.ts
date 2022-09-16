@@ -4,7 +4,18 @@ import { toBN } from 'starknet/utils/number'
 import { computeHashOnElements, pedersen } from 'starknet/dist/utils/hash'
 import { validateAndParseAddress as getAddress } from 'starknet/utils/address'
 
-import { BigintIsh, ZERO, ONE, TWO, THREE, SolidityType, SOLIDITY_TYPE_MAXIMA, FACTORY_ADDRESSES, PAIR_CONTRACT_CLASS_HASH, CONTRACT_ADDRESS_PREFIX } from './constants'
+import {
+  BigintIsh,
+  ZERO,
+  ONE,
+  TWO,
+  THREE,
+  SolidityType,
+  SOLIDITY_TYPE_MAXIMA,
+  FACTORY_ADDRESSES,
+  PAIR_CONTRACT_CLASS_HASH,
+  CONTRACT_ADDRESS_PREFIX
+} from './constants'
 import { Token } from '.'
 
 export function validateSolidityTypeInstance(value: JSBI, solidityType: SolidityType): void {
@@ -84,13 +95,7 @@ export function getPairAddress(tokenA: Token, tokenB: Token) {
   const salt = pedersen([tokens[0].address, tokens[1].address])
   const constructorCalldataHash = computeHashOnElements([])
 
-  return computeHashOnElements([
-    CONTRACT_ADDRESS_PREFIX,
-    FACTORY_ADDRESSES[tokenA.chainId],
-    salt,
-    PAIR_CONTRACT_CLASS_HASH,
-    constructorCalldataHash,
-  ])
+  return computeHashOnElements([CONTRACT_ADDRESS_PREFIX, FACTORY_ADDRESSES[tokenA.chainId], salt, PAIR_CONTRACT_CLASS_HASH, constructorCalldataHash])
 }
 
 export function isEqualAddress(addressA: string, addressB: string): boolean {

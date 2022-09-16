@@ -18,30 +18,31 @@ describe('Router', () => {
   describe('#swapCallParameters', () => {
     describe('exact in', () => {
       it('token0 to token1', () => {
-        const result = Router.swapCallParameters(
-          Trade.exactIn(new Route([pair_0_1], token0, token1), new TokenAmount(token0, JSBI.BigInt(100))),
-          { ttl: 50, recipient: '0x0000000000000000000000000000000000000000000000000000000000000004', allowedSlippage: new Percent('1', '100') }
-        )
+        const result = Router.swapCallParameters(Trade.exactIn(new Route([pair_0_1], token0, token1), new TokenAmount(token0, JSBI.BigInt(100))), {
+          ttl: 50,
+          recipient: '0x0000000000000000000000000000000000000000000000000000000000000004',
+          allowedSlippage: new Percent('1', '100')
+        })
         expect(result.methodName).toEqual('swapExactTokensForTokens')
-        expect(result.args.slice(0, -1)).toEqual(
-          [
-            '0x64',
-            '0x0',
-            '0x59',
-            '0x0',
-            '2',
-            ...[token0.address, token1.address],
-            '0x0000000000000000000000000000000000000000000000000000000000000004'
-          ])
+        expect(result.args.slice(0, -1)).toEqual([
+          '0x64',
+          '0x0',
+          '0x59',
+          '0x0',
+          '2',
+          ...[token0.address, token1.address],
+          '0x0000000000000000000000000000000000000000000000000000000000000004'
+        ])
         checkDeadline(result.args[result.args.length - 1])
       })
     })
     describe('exact out', () => {
       it('token0 to token1', () => {
-        const result = Router.swapCallParameters(
-          Trade.exactOut(new Route([pair_0_1], token0, token1), new TokenAmount(token1, JSBI.BigInt(100))),
-          { ttl: 50, recipient: '0x0000000000000000000000000000000000000000000000000000000000000004', allowedSlippage: new Percent('1', '100') }
-        )
+        const result = Router.swapCallParameters(Trade.exactOut(new Route([pair_0_1], token0, token1), new TokenAmount(token1, JSBI.BigInt(100))), {
+          ttl: 50,
+          recipient: '0x0000000000000000000000000000000000000000000000000000000000000004',
+          allowedSlippage: new Percent('1', '100')
+        })
         expect(result.methodName).toEqual('swapTokensForExactTokens')
         expect(result.args.slice(0, -1)).toEqual([
           '0x64',
@@ -58,15 +59,12 @@ describe('Router', () => {
     describe('supporting fee on transfer', () => {
       describe('exact in', () => {
         it('token0 to token1', () => {
-          const result = Router.swapCallParameters(
-            Trade.exactIn(new Route([pair_0_1], token0, token1), new TokenAmount(token0, JSBI.BigInt(100))),
-            {
-              ttl: 50,
-              recipient: '0x0000000000000000000000000000000000000000000000000000000000000004',
-              allowedSlippage: new Percent('1', '100'),
-              feeOnTransfer: true
-            }
-          )
+          const result = Router.swapCallParameters(Trade.exactIn(new Route([pair_0_1], token0, token1), new TokenAmount(token0, JSBI.BigInt(100))), {
+            ttl: 50,
+            recipient: '0x0000000000000000000000000000000000000000000000000000000000000004',
+            allowedSlippage: new Percent('1', '100'),
+            feeOnTransfer: true
+          })
           expect(result.methodName).toEqual('swapExactTokensForTokensSupportingFeeOnTransferTokens')
           expect(result.args.slice(0, -1)).toEqual([
             '0x64',
@@ -83,15 +81,12 @@ describe('Router', () => {
       describe('exact out', () => {
         it('token0 to token1', () => {
           expect(() =>
-            Router.swapCallParameters(
-              Trade.exactOut(new Route([pair_0_1], token0, token1), new TokenAmount(token1, JSBI.BigInt(100))),
-              {
-                ttl: 50,
-                recipient: '0x0000000000000000000000000000000000000000000000000000000000000004',
-                allowedSlippage: new Percent('1', '100'),
-                feeOnTransfer: true
-              }
-            )
+            Router.swapCallParameters(Trade.exactOut(new Route([pair_0_1], token0, token1), new TokenAmount(token1, JSBI.BigInt(100))), {
+              ttl: 50,
+              recipient: '0x0000000000000000000000000000000000000000000000000000000000000004',
+              allowedSlippage: new Percent('1', '100'),
+              feeOnTransfer: true
+            })
           ).toThrow('EXACT_OUT_FOT')
         })
       })

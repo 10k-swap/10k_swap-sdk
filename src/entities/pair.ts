@@ -21,8 +21,8 @@ export class Pair {
         ...PAIR_ADDRESS_CACHE,
         [tokens[0].address]: {
           ...PAIR_ADDRESS_CACHE?.[tokens[0].address],
-          [tokens[1].address]: getPairAddress(tokenA, tokenB),
-        },
+          [tokens[1].address]: getPairAddress(tokenA, tokenB)
+        }
       }
     }
 

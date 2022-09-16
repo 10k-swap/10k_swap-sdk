@@ -39,7 +39,7 @@ export interface SwapParameters {
   /**
    * The arguments to pass to the method, all hex encoded.
    */
-  args: (string)[]
+  args: string[]
 }
 
 /**
@@ -49,7 +49,7 @@ export abstract class Router {
   /**
    * Cannot be constructed.
    */
-  private constructor() { }
+  private constructor() {}
   /**
    * Produces the on-chain method name to call and the hex encoded parameters to pass as arguments for a given trade.
    * @param trade to produce call parameters for
@@ -61,12 +61,12 @@ export abstract class Router {
     const to: string = options.recipient
     const amountIn: Uint256 = bnToUint256(trade.maximumAmountIn(options.allowedSlippage).raw.toString())
     const amountOut: Uint256 = bnToUint256(trade.minimumAmountOut(options.allowedSlippage).raw.toString())
-    const path: string[] = trade.route.path.map((token) => token.address)
+    const path: string[] = trade.route.path.map(token => token.address)
     const deadline = `${(Math.floor(new Date().getTime() / 1000) + options.ttl).toString()}`
     const useFeeOnTransfer = Boolean(options.feeOnTransfer)
 
     let methodName: string
-    let args: (string)[]
+    let args: string[]
     switch (trade.tradeType) {
       case TradeType.EXACT_INPUT:
         methodName = useFeeOnTransfer ? 'swapExactTokensForTokensSupportingFeeOnTransferTokens' : 'swapExactTokensForTokens'
@@ -100,7 +100,7 @@ export abstract class Router {
     }
     return {
       methodName,
-      args,
+      args
     }
   }
 }

@@ -14,13 +14,13 @@ const Big = toFormat(_Big)
 const toSignificantRounding = {
   [Rounding.ROUND_DOWN]: Decimal.ROUND_DOWN,
   [Rounding.ROUND_HALF_UP]: Decimal.ROUND_HALF_UP,
-  [Rounding.ROUND_UP]: Decimal.ROUND_UP,
+  [Rounding.ROUND_UP]: Decimal.ROUND_UP
 }
 
 const toFixedRounding = {
   [Rounding.ROUND_DOWN]: 0,
   [Rounding.ROUND_HALF_UP]: 1,
-  [Rounding.ROUND_UP]: 3,
+  [Rounding.ROUND_UP]: 3
 }
 
 export class Fraction {

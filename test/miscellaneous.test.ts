@@ -8,19 +8,11 @@ describe('miscellaneous', () => {
     const pair = new Pair(new TokenAmount(tokenA, '0'), new TokenAmount(tokenB, '0'))
 
     expect(() => {
-      pair.getLiquidityMinted(
-        new TokenAmount(pair.liquidityToken, '0'),
-        new TokenAmount(tokenA, '1000'),
-        new TokenAmount(tokenB, '1000')
-      )
+      pair.getLiquidityMinted(new TokenAmount(pair.liquidityToken, '0'), new TokenAmount(tokenA, '1000'), new TokenAmount(tokenB, '1000'))
     }).toThrow(InsufficientInputAmountError)
 
     expect(() => {
-      pair.getLiquidityMinted(
-        new TokenAmount(pair.liquidityToken, '0'),
-        new TokenAmount(tokenA, '1000000'),
-        new TokenAmount(tokenB, '1')
-      )
+      pair.getLiquidityMinted(new TokenAmount(pair.liquidityToken, '0'), new TokenAmount(tokenA, '1000000'), new TokenAmount(tokenB, '1'))
     }).toThrow(InsufficientInputAmountError)
 
     const liquidity = pair.getLiquidityMinted(
@@ -39,11 +31,7 @@ describe('miscellaneous', () => {
 
     expect(
       pair
-        .getLiquidityMinted(
-          new TokenAmount(pair.liquidityToken, '10000'),
-          new TokenAmount(tokenA, '2000'),
-          new TokenAmount(tokenB, '2000')
-        )
+        .getLiquidityMinted(new TokenAmount(pair.liquidityToken, '10000'), new TokenAmount(tokenA, '2000'), new TokenAmount(tokenB, '2000'))
         .raw.toString()
     ).toEqual('2000')
   })
