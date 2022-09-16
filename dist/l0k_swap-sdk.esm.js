@@ -2299,9 +2299,9 @@ var Fetcher = /*#__PURE__*/function () {
       !(tokenA.chainId === tokenB.chainId) ? process.env.NODE_ENV !== "production" ? invariant(false, 'CHAIN_ID') : invariant(false) : void 0;
       var address = Pair.getAddress(tokenA, tokenB);
       return Promise.resolve(new Contract(l0kPairAbi, address, provider).call('getReserves', [])).then(function (_ref) {
-        var reserves0 = _ref.reserves0,
-            reserves1 = _ref.reserves1;
-        var balances = tokenA.sortsBefore(tokenB) ? [reserves0, reserves1] : [reserves1, reserves0];
+        var reserve0 = _ref.reserve0,
+            reserve1 = _ref.reserve1;
+        var balances = tokenA.sortsBefore(tokenB) ? [reserve0, reserve1] : [reserve0, reserve1];
         return new Pair(new TokenAmount(tokenA, balances[0].toString()), new TokenAmount(tokenB, balances[1].toString()));
       });
     } catch (e) {

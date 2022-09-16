@@ -77,8 +77,8 @@ export abstract class Fetcher {
   public static async fetchPairData(tokenA: Token, tokenB: Token, provider = new Provider({ network: NetworkNames[tokenA.chainId] })): Promise<Pair> {
     invariant(tokenA.chainId === tokenB.chainId, 'CHAIN_ID')
     const address = Pair.getAddress(tokenA, tokenB)
-    const { reserves0, reserves1 } = await new Contract(l0kPairAbi as Abi, address, provider).call('getReserves', [])
-    const balances = tokenA.sortsBefore(tokenB) ? [reserves0, reserves1] : [reserves1, reserves0]
+    const { reserve0, reserve1 } = await new Contract(l0kPairAbi as Abi, address, provider).call('getReserves', [])
+    const balances = tokenA.sortsBefore(tokenB) ? [reserve0, reserve1] : [reserve0, reserve1]
 
     return new Pair(new TokenAmount(tokenA, balances[0].toString()), new TokenAmount(tokenB, balances[1].toString()))
   }
