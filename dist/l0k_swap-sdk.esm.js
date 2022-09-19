@@ -264,7 +264,7 @@ var SolidityType;
 
 var SOLIDITY_TYPE_MAXIMA = (_SOLIDITY_TYPE_MAXIMA = {}, _SOLIDITY_TYPE_MAXIMA[SolidityType.uint8] = /*#__PURE__*/JSBI.BigInt('0xff'), _SOLIDITY_TYPE_MAXIMA[SolidityType.uint256] = /*#__PURE__*/JSBI.BigInt('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'), _SOLIDITY_TYPE_MAXIMA);
 var PAIR_CONTRACT_CLASS_HASH = '0x231adde42526bad434ca2eb983efdd64472638702f87f97e6e3c084f264e06f';
-var FACTORY_ADDRESSES = (_FACTORY_ADDRESSES = {}, _FACTORY_ADDRESSES[StarknetChainId.MAINNET] = '', _FACTORY_ADDRESSES[StarknetChainId.TESTNET] = '0x06c31f39524388c982045988de3788530605ed08b10389def2e7b1dd09d19308', _FACTORY_ADDRESSES);
+var FACTORY_ADDRESSES = (_FACTORY_ADDRESSES = {}, _FACTORY_ADDRESSES[StarknetChainId.MAINNET] = '0x01c0a36e26a8f822e0d81f20a5a562b16a8f8a3dfd99801367dd2aea8f1a87a2', _FACTORY_ADDRESSES[StarknetChainId.TESTNET] = '0x06c31f39524388c982045988de3788530605ed08b10389def2e7b1dd09d19308', _FACTORY_ADDRESSES);
 var CONTRACT_ADDRESS_PREFIX = /*#__PURE__*/encodeShortString('STARKNET_CONTRACT_ADDRESS');
 
 function validateSolidityTypeInstance(value, solidityType) {
@@ -2250,7 +2250,6 @@ var getDecimals = function getDecimals(chainId, address, provider) {
     return Promise.reject(e);
   }
 };
-
 var NetworkNames = (_NetworkNames = {}, _NetworkNames[StarknetChainId.MAINNET] = 'mainnet-alpha', _NetworkNames[StarknetChainId.TESTNET] = 'goerli-alpha', _NetworkNames);
 var TOKEN_DECIMALS_CACHE = (_TOKEN_DECIMALS_CACHE = {}, _TOKEN_DECIMALS_CACHE[StarknetChainId.TESTNET] = {
   '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7': 18 // ETH
