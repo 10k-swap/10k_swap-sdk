@@ -103,11 +103,11 @@ console.log(percent.toSignificant(2)) // 60
 
 ### toSignificant
 
-See [toSignificant](#tosignificant).
+See [toSignificant](https://github.com/10k-swap/10k_swap-sdk/blob/main/doc/fractions.md#tosignificant).
 
 ### toFixed
 
-See [toFixed](#tofixed).
+See [toFixed](https://github.com/10k-swap/10k_swap-sdk/blob/main/doc/fractions.md#tofixed).
 
 # TokenAmount
 
@@ -160,11 +160,11 @@ subtract(other: TokenAmount): TokenAmount
 
 ### toSignificant
 
-See [toSignificant](#tosignificant).
+See [toSignificant](https://github.com/10k-swap/10k_swap-sdk/blob/main/doc/fractions.md#tosignificant).
 
 ### toFixed
 
-See [toFixed](#tofixed).
+See [toFixed](https://github.com/10k-swap/10k_swap-sdk/blob/main/doc/fractions.md#tofixed).
 
 ### toExact
 
@@ -264,8 +264,8 @@ Given an asset amount, returns an equivalent value of the other asset, according
 
 ### toSignificant
 
-See [toSignificant](#tosignificant).
+See [toSignificant](https://github.com/10k-swap/10k_swap-sdk/blob/main/doc/fractions.md#tosignificant).
 
 ### toFixed
 
-See [toFixed](#tofixed).
+See [toFixed](https://github.com/10k-swap/10k_swap-sdk/blob/main/doc/fractions.md#tofixed).

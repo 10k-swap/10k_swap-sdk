@@ -23,7 +23,7 @@ const pair = new Pair(new TokenAmount(HOT, '2000000000000000000'), new TokenAmou
 getAddress(tokenA: Token, tokenB: Token): string
 ```
 
-Computes the pair address for the passed [Tokens](token).
+Computes the pair address for the passed [Tokens](https://github.com/10k-swap/10k_swap-sdk/blob/main/doc/token.md).
 
 # Properties
 

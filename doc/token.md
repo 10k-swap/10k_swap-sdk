@@ -20,7 +20,7 @@ const token = new Token(ChainId.MAINNET, '0x000000000000000000000000000000000000
 chainId: ChainId
 ```
 
-See [ChainId](other-exports/#chainid)
+See [ChainId](https://github.com/10k-swap/10k_swap-sdk/blob/main/doc/other-exports.md#chainid)
 
 ## address
 

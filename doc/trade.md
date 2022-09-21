@@ -25,7 +25,7 @@ const trade = new Trade(NOT_TO_HOT, new TokenAmount(NOT, '1000000000000000'), Tr
 route: Route
 ```
 
-The [path](route#path) property of the route should be passed as the path parameter to router functions.
+The [path](https://github.com/10k-swap/10k_swap-sdk/blob/main/doc/route.md#path) property of the route should be passed as the path parameter to router functions.
 
 ## tradeType
 
