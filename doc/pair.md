@@ -1,3 +1,5 @@
+# Pair
+
 ```typescript
 constructor(tokenAmountA: TokenAmount, tokenAmountB: TokenAmount)
 ```

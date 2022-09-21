@@ -1,3 +1,5 @@
+# Fetcher
+
 The data fetching logic is split from the rest of the code for better tree-shaking,
 i.e. so that it does not get packaged into your code unless it is used.
 The SDK is otherwise unconcerned with how you get data from the blockchain.

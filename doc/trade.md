@@ -1,3 +1,5 @@
+# Trade
+
 ```typescript
 constructor(route: Route, amount: TokenAmount, tradeType: TradeType)
 ```
