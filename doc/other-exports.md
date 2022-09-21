@@ -53,13 +53,13 @@ import { Rounding } from '10k_swap-sdk'
 
 A enum denominating supported rounding options.
 
-# FACTORY_ADDRESS
+# FACTORY_ADDRESSES
 
 ```typescript
-import { FACTORY_ADDRESS } from '10k_swap-sdk'
+import { FACTORY_ADDRESSES } from '10k_swap-sdk'
 ```
 
-The factory address.
+The factory addresses.
 
 # CONTRACT_ADDRESS_PREFIX
 
