@@ -34,9 +34,14 @@ Comprehensive reference material for the SDK is publicly available on the [10ksw
 
 # DOC
 
-[fetcher]()
-[fractions]()
-[constants]()
-[route]()
-[token]()
-[trade]()
+[fetcher](https://github.com/10k-swap/10k_swap-sdk/blob/main/doc/fetcher.md)
+
+[fractions](https://github.com/10k-swap/10k_swap-sdk/blob/main/doc/fractions.md)
+
+[constants](https://github.com/10k-swap/10k_swap-sdk/blob/main/doc/other-exports.md)
+
+[route](https://github.com/10k-swap/10k_swap-sdk/blob/main/doc/route.md)
+
+[token](https://github.com/10k-swap/10k_swap-sdk/blob/main/doc/token.md)
+
+[trade](https://github.com/10k-swap/10k_swap-sdk/blob/main/doc/trade.md)
