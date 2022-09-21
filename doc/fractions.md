@@ -183,7 +183,7 @@ Responsible for denominating the relative price between two tokens. Denominator 
 ## Example
 
 ```typescript
-import { ChainId, WETH as WETHs, Token, Price } from '10k_swap-sdk'
+import { ChainId, Token, Price } from '10k_swap-sdk'
 
 const ETH = new Token(ChainId.MAINNET, '0x0000000000000000000000000000000000000000000000000000000000000001', 18, 'ABC')
 const ABC = new Token(ChainId.MAINNET, '0x0000000000000000000000000000000000000000000000000000000000000002', 18, 'ABC')
@@ -192,7 +192,7 @@ const price = new Price(ETH, ABC, '1000000000000000000', '123000000000000000000'
 console.log(price.toSignificant(3)) // 123
 ```
 
-This example shows the ETH/XYZ price, where ETH is the base token, and XYZ is the quote token. The price is constructed from an amount of XYZ (the numerator) / an amount of WETH (the denominator).
+This example shows the ETH/XYZ price, where ETH is the base token, and XYZ is the quote token. The price is constructed from an amount of XYZ (the numerator) / an amount of ETH (the denominator).
 
 ## Static Methods
 
