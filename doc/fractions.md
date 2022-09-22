@@ -186,9 +186,9 @@ Responsible for denominating the relative price between two tokens. Denominator 
 import { ChainId, Token, Price } from '10k_swap-sdk'
 
 const ETH = new Token(ChainId.MAINNET, '0x0000000000000000000000000000000000000000000000000000000000000001', 18, 'ETH')
-const ABC = new Token(ChainId.MAINNET, '0x0000000000000000000000000000000000000000000000000000000000000002', 18, 'ABC')
+const XYZ = new Token(ChainId.MAINNET, '0x0000000000000000000000000000000000000000000000000000000000000002', 18, 'XYZ')
 
-const price = new Price(ETH, ABC, '1000000000000000000', '123000000000000000000')
+const price = new Price(ETH, XYZ, '1000000000000000000', '123000000000000000000')
 console.log(price.toSignificant(3)) // 123
 ```
 
