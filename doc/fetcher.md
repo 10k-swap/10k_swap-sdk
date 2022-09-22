@@ -29,7 +29,7 @@ Initializes a class instance from a chainId and token address, if the decimals o
 async fetchPairData(
   tokenA: Token,
   tokenB: Token,
-  provider = new Provider({ network: NetworkNames[chainId] })
+  provider = new Provider({ network: NetworkNames[tokenA.chainId] })
 ): Promise<Pair>
 ```
 
