@@ -27,5 +27,11 @@ describe('Token', () => {
       const tokenB = new Token(ChainId.MAINNET, ADDRESS_ONE, 18, 'ghi', 'jkl')
       expect(tokenA.equals(tokenB)).toBe(true)
     })
+
+    it('sort before', () => {
+      const tokenA = new Token(ChainId.MAINNET, ADDRESS_ONE, 18, 'abc', 'def')
+      const tokenB = new Token(ChainId.MAINNET, ADDRESS_TWO, 18, 'ghi', 'jkl')
+      expect(tokenA.sortsBefore(tokenB)).toBe(true)
+    })
   })
 })
