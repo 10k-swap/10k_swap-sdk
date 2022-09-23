@@ -66,7 +66,7 @@ The factory addresses.
 ```typescript
 import { CONTRACT_ADDRESS_PREFIX } from '10k_swap-sdk'
 ```
-Encode short string `STARKNET_CONTRACT_ADDRESS`
+Encode short string `STARKNET_CONTRACT_ADDRESS`.
 
 # MINIMUM_LIQUIDITY
 
