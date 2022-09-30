@@ -83,7 +83,7 @@ The slippage incurred by the trade.
 
 In the context of the following two methods, slippage refers to the percent difference between the actual price and the trade `executionPrice`.
 
-## minimumAmountOut (since 2.0.4)
+## minimumAmountOut
 
 ```typescript
 minimumAmountOut(slippageTolerance: Percent): TokenAmount
@@ -93,7 +93,7 @@ Returns the minimum amount of the output token that should be received from a tr
 
 Useful when constructing a transaction for a trade of type `EXACT_INPUT`.
 
-## maximumAmountIn (since 2.0.4)
+## maximumAmountIn
 
 ```typescript
 maximumAmountIn(slippageTolerance: Percent): TokenAmount
