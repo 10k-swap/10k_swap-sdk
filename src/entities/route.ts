@@ -1,4 +1,4 @@
-import { ChainId } from '../constants'
+import { StarknetChainId } from '../constants'
 import invariant from 'tiny-invariant'
 
 import { Token } from './token'
@@ -36,7 +36,7 @@ export class Route {
     this.output = output ?? path[path.length - 1]
   }
 
-  public get chainId(): ChainId {
+  public get chainId(): StarknetChainId {
     return this.pairs[0].chainId
   }
 }

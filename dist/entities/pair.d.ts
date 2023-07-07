@@ -1,6 +1,6 @@
 import { Price } from './fractions/price';
 import { TokenAmount } from './fractions/tokenAmount';
-import { BigintIsh, ChainId } from '../constants';
+import { BigintIsh, StarknetChainId } from '../constants';
 import { Token } from './token';
 export declare class Pair {
     readonly liquidityToken: Token;
@@ -28,7 +28,7 @@ export declare class Pair {
     /**
      * Returns the chain ID of the tokens in the pair.
      */
-    get chainId(): ChainId;
+    get chainId(): StarknetChainId;
     get token0(): Token;
     get token1(): Token;
     get reserve0(): TokenAmount;

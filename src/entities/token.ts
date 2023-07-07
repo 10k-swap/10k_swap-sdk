@@ -1,6 +1,6 @@
 import invariant from 'tiny-invariant'
 import JSBI from 'jsbi'
-import { ChainId, SolidityType } from '../constants'
+import { StarknetChainId, SolidityType } from '../constants'
 import { isEqualAddress, sortsBefore, validateAndParseAddress, validateSolidityTypeInstance } from '../utils'
 
 /**
@@ -10,10 +10,10 @@ export class Token {
   public readonly decimals: number
   public readonly symbol?: string
   public readonly name?: string
-  public readonly chainId: ChainId
+  public readonly chainId: StarknetChainId
   public readonly address: string
 
-  public constructor(chainId: ChainId, address: string, decimals: number, symbol?: string, name?: string) {
+  public constructor(chainId: StarknetChainId, address: string, decimals: number, symbol?: string, name?: string) {
     validateSolidityTypeInstance(JSBI.BigInt(decimals), SolidityType.uint8)
 
     this.decimals = decimals

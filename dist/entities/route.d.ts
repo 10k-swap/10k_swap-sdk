@@ -1,4 +1,4 @@
-import { ChainId } from '../constants';
+import { StarknetChainId } from '../constants';
 import { Token } from './token';
 import { Pair } from './pair';
 import { Price } from './fractions/price';
@@ -9,5 +9,5 @@ export declare class Route {
     readonly output: Token;
     readonly midPrice: Price;
     constructor(pairs: Pair[], input: Token, output?: Token);
-    get chainId(): ChainId;
+    get chainId(): StarknetChainId;
 }

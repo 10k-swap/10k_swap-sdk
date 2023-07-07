@@ -1,11 +1,15 @@
 import JSBI from 'jsbi'
-import { encodeShortString } from 'starknet/utils/shortString'
-import { StarknetChainId } from 'starknet/constants'
+import { shortString } from 'starknet'
+
+const { encodeShortString } = shortString
+
+export enum StarknetChainId {
+  MAINNET = 'SN_MAIN',
+  TESTNET = 'SN_GOERLI'
+}
 
 // exports for external consumption
 export type BigintIsh = JSBI | bigint | string
-
-export { StarknetChainId as ChainId } from 'starknet/constants'
 
 export enum TradeType {
   EXACT_INPUT,

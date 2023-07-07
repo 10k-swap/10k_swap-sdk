@@ -2,7 +2,7 @@ import { Price } from './fractions/price'
 import { TokenAmount } from './fractions/tokenAmount'
 import invariant from 'tiny-invariant'
 import JSBI from 'jsbi'
-import { BigintIsh, MINIMUM_LIQUIDITY, ZERO, ONE, FIVE, FEES_NUMERATOR, FEES_DENOMINATOR, ChainId } from '../constants'
+import { BigintIsh, MINIMUM_LIQUIDITY, ZERO, ONE, FIVE, FEES_NUMERATOR, FEES_DENOMINATOR, StarknetChainId } from '../constants'
 import { sqrt, parseBigintIsh, getPairAddress } from '../utils'
 import { InsufficientReservesError, InsufficientInputAmountError } from '../errors'
 import { Token } from './token'
@@ -77,7 +77,7 @@ export class Pair {
   /**
    * Returns the chain ID of the tokens in the pair.
    */
-  public get chainId(): ChainId {
+  public get chainId(): StarknetChainId {
     return this.token0.chainId
   }
 

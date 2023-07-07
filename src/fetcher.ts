@@ -4,23 +4,23 @@ import { Pair } from './entities/pair'
 import l0kPairAbi from './abis/l0kPairAbi.json'
 import invariant from 'tiny-invariant'
 import ERC20 from './abis/ERC20.json'
-import { ChainId } from './constants'
+import { StarknetChainId } from './constants'
 import { Token } from './entities/token'
 
-const NetworkNames: { [chainId in ChainId]: 'mainnet-alpha' | 'goerli-alpha' } = {
-  [ChainId.MAINNET]: 'mainnet-alpha',
-  [ChainId.TESTNET]: 'goerli-alpha'
+const NetworkNames: { [starknetChainId in StarknetChainId]: 'mainnet-alpha' | 'goerli-alpha' } = {
+  [StarknetChainId.MAINNET]: 'mainnet-alpha',
+  [StarknetChainId.TESTNET]: 'goerli-alpha'
 }
 
-let TOKEN_DECIMALS_CACHE: { [chainId: string]: { [address: string]: number } } = {
-  [ChainId.TESTNET]: {
+let TOKEN_DECIMALS_CACHE: { [StarknetChainId: string]: { [address: string]: number } } = {
+  [StarknetChainId.TESTNET]: {
     '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7': 18 // ETH
   }
 }
 
-async function getDecimals(chainId: ChainId, address: string, provider: Provider): Promise<number> {
-  if (typeof TOKEN_DECIMALS_CACHE?.[chainId]?.[address] === 'number') {
-    return TOKEN_DECIMALS_CACHE[chainId][address]
+async function getDecimals(StarknetChainId: StarknetChainId, address: string, provider: Provider): Promise<number> {
+  if (typeof TOKEN_DECIMALS_CACHE?.[StarknetChainId]?.[address] === 'number') {
+    return TOKEN_DECIMALS_CACHE[StarknetChainId][address]
   }
 
   const contract = new Contract(ERC20 as Abi, address, provider)
@@ -29,8 +29,8 @@ async function getDecimals(chainId: ChainId, address: string, provider: Provider
 
   TOKEN_DECIMALS_CACHE = {
     ...TOKEN_DECIMALS_CACHE,
-    [chainId]: {
-      ...TOKEN_DECIMALS_CACHE?.[chainId],
+    [StarknetChainId]: {
+      ...TOKEN_DECIMALS_CACHE?.[StarknetChainId],
       [address]: decimals.toNumber()
     }
   }
@@ -45,26 +45,26 @@ export abstract class Fetcher {
   /**
    * Cannot be constructed.
    */
-  private constructor() { }
+  private constructor() {}
 
   /**
    * Fetch information for a given token on the given chain, using the given ethers provider.
-   * @param chainId chain of the token
+   * @param StarknetChainId chain of the token
    * @param address address of the token on the chain
    * @param provider provider used to fetch the token
    * @param symbol optional symbol of the token
    * @param name optional name of the token
    */
   public static async fetchTokenData(
-    chainId: ChainId,
+    StarknetChainId: StarknetChainId,
     address: string,
-    provider = new Provider({ network: NetworkNames[chainId] }),
+    provider = new Provider({ sequencer: { network: NetworkNames[StarknetChainId] } }),
     symbol?: string,
     name?: string
   ): Promise<Token> {
-    const parsedDecimals = await getDecimals(chainId, address, provider)
+    const parsedDecimals = await getDecimals(StarknetChainId, address, provider)
 
-    return new Token(chainId, address, parsedDecimals, symbol, name)
+    return new Token(StarknetChainId, address, parsedDecimals, symbol, name)
   }
 
   /**
@@ -73,7 +73,11 @@ export abstract class Fetcher {
    * @param tokenB second token
    * @param provider the provider to use to fetch the data
    */
-  public static async fetchPairData(tokenA: Token, tokenB: Token, provider = new Provider({ network: NetworkNames[tokenA.chainId] })): Promise<Pair> {
+  public static async fetchPairData(
+    tokenA: Token,
+    tokenB: Token,
+    provider = new Provider({ sequencer: { network: NetworkNames[tokenA.chainId] } })
+  ): Promise<Pair> {
     invariant(tokenA.chainId === tokenB.chainId, 'CHAIN_ID')
     const address = Pair.getAddress(tokenA, tokenB)
     const { reserve0, reserve1 } = await new Contract(l0kPairAbi as Abi, address, provider).call('getReserves', [])

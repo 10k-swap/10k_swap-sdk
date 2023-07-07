@@ -1,17 +1,10 @@
 import JSBI from 'jsbi';
 export { default as JSBI } from 'jsbi';
 import invariant from 'tiny-invariant';
-import { encodeShortString } from 'starknet/utils/shortString';
-import { StarknetChainId } from 'starknet/constants';
-export { StarknetChainId as ChainId } from 'starknet/constants';
-import { toBN } from 'starknet/utils/number';
-import { pedersen, computeHashOnElements } from 'starknet/dist/utils/hash';
-import { validateAndParseAddress as validateAndParseAddress$1 } from 'starknet/utils/address';
+import { shortString, validateAndParseAddress as validateAndParseAddress$1, number, hash, uint256, Provider, Contract } from 'starknet';
 import toFormat from 'toformat';
 import _Decimal from 'decimal.js-light';
 import _Big from 'big.js';
-import { bnToUint256 } from 'starknet/dist/utils/uint256';
-import { Provider, Contract } from 'starknet';
 
 function _defineProperties(target, props) {
   for (var i = 0; i < props.length; i++) {
@@ -229,6 +222,14 @@ var InsufficientInputAmountError = /*#__PURE__*/function (_Error2) {
 }( /*#__PURE__*/_wrapNativeSuper(Error));
 
 var _SOLIDITY_TYPE_MAXIMA, _FACTORY_ADDRESSES;
+var encodeShortString = shortString.encodeShortString;
+var StarknetChainId;
+
+(function (StarknetChainId) {
+  StarknetChainId["MAINNET"] = "SN_MAIN";
+  StarknetChainId["TESTNET"] = "SN_GOERLI";
+})(StarknetChainId || (StarknetChainId = {}));
+
 var TradeType;
 
 (function (TradeType) {
@@ -267,6 +268,9 @@ var PAIR_CONTRACT_CLASS_HASH = '0x231adde42526bad434ca2eb983efdd64472638702f87f9
 var FACTORY_ADDRESSES = (_FACTORY_ADDRESSES = {}, _FACTORY_ADDRESSES[StarknetChainId.MAINNET] = '0x01c0a36e26a8f822e0d81f20a5a562b16a8f8a3dfd99801367dd2aea8f1a87a2', _FACTORY_ADDRESSES[StarknetChainId.TESTNET] = '0x06c31f39524388c982045988de3788530605ed08b10389def2e7b1dd09d19308', _FACTORY_ADDRESSES);
 var CONTRACT_ADDRESS_PREFIX = /*#__PURE__*/encodeShortString('STARKNET_CONTRACT_ADDRESS');
 
+var toBN = number.toBN;
+var computeHashOnElements = hash.computeHashOnElements,
+    pedersen = hash.pedersen;
 function validateSolidityTypeInstance(value, solidityType) {
   !JSBI.greaterThanOrEqual(value, ZERO) ? process.env.NODE_ENV !== "production" ? invariant(false, value + " is not a " + solidityType + ".") : invariant(false) : void 0;
   !JSBI.lessThanOrEqual(value, SOLIDITY_TYPE_MAXIMA[solidityType]) ? process.env.NODE_ENV !== "production" ? invariant(false, value + " is not a " + solidityType + ".") : invariant(false) : void 0;
@@ -348,7 +352,7 @@ function getPairAddress(tokenA, tokenB) {
   return computeHashOnElements([CONTRACT_ADDRESS_PREFIX, FACTORY_ADDRESSES[tokenA.chainId], salt, PAIR_CONTRACT_CLASS_HASH, constructorCalldataHash]);
 }
 function isEqualAddress(addressA, addressB) {
-  return toBN(addressA).eq(toBN(addressB));
+  return number.toBN(addressA).eq(number.toBN(addressB));
 }
 function sortsBefore(addressA, addressB) {
   return toBN(addressA).lt(toBN(addressB));
@@ -1282,6 +1286,7 @@ var Trade = /*#__PURE__*/function () {
   return Trade;
 }();
 
+var bnToUint256 = uint256.bnToUint256;
 /**
  * Represents the Uniswap V2 Router, and has static methods for helping execute trades.
  */
@@ -2230,12 +2235,12 @@ var ERC20 = [
 
 var _NetworkNames, _TOKEN_DECIMALS_CACHE;
 
-var getDecimals = function getDecimals(chainId, address, provider) {
+var getDecimals = function getDecimals(StarknetChainId, address, provider) {
   try {
     var _TOKEN_DECIMALS_CACHE2, _TOKEN_DECIMALS_CACHE3;
 
-    if (typeof ((_TOKEN_DECIMALS_CACHE2 = TOKEN_DECIMALS_CACHE) === null || _TOKEN_DECIMALS_CACHE2 === void 0 ? void 0 : (_TOKEN_DECIMALS_CACHE3 = _TOKEN_DECIMALS_CACHE2[chainId]) === null || _TOKEN_DECIMALS_CACHE3 === void 0 ? void 0 : _TOKEN_DECIMALS_CACHE3[address]) === 'number') {
-      return Promise.resolve(TOKEN_DECIMALS_CACHE[chainId][address]);
+    if (typeof ((_TOKEN_DECIMALS_CACHE2 = TOKEN_DECIMALS_CACHE) === null || _TOKEN_DECIMALS_CACHE2 === void 0 ? void 0 : (_TOKEN_DECIMALS_CACHE3 = _TOKEN_DECIMALS_CACHE2[StarknetChainId]) === null || _TOKEN_DECIMALS_CACHE3 === void 0 ? void 0 : _TOKEN_DECIMALS_CACHE3[address]) === 'number') {
+      return Promise.resolve(TOKEN_DECIMALS_CACHE[StarknetChainId][address]);
     }
 
     var contract = new Contract(ERC20, address, provider);
@@ -2243,7 +2248,7 @@ var getDecimals = function getDecimals(chainId, address, provider) {
       var _TOKEN_DECIMALS_CACHE4, _extends2, _extends3;
 
       var decimals = _ref2.decimals;
-      TOKEN_DECIMALS_CACHE = _extends({}, TOKEN_DECIMALS_CACHE, (_extends3 = {}, _extends3[chainId] = _extends({}, (_TOKEN_DECIMALS_CACHE4 = TOKEN_DECIMALS_CACHE) === null || _TOKEN_DECIMALS_CACHE4 === void 0 ? void 0 : _TOKEN_DECIMALS_CACHE4[chainId], (_extends2 = {}, _extends2[address] = decimals.toNumber(), _extends2)), _extends3));
+      TOKEN_DECIMALS_CACHE = _extends({}, TOKEN_DECIMALS_CACHE, (_extends3 = {}, _extends3[StarknetChainId] = _extends({}, (_TOKEN_DECIMALS_CACHE4 = TOKEN_DECIMALS_CACHE) === null || _TOKEN_DECIMALS_CACHE4 === void 0 ? void 0 : _TOKEN_DECIMALS_CACHE4[StarknetChainId], (_extends2 = {}, _extends2[address] = decimals.toNumber(), _extends2)), _extends3));
       return decimals.toNumber();
     });
   } catch (e) {
@@ -2262,7 +2267,7 @@ var Fetcher = /*#__PURE__*/function () {
   function Fetcher() {}
   /**
    * Fetch information for a given token on the given chain, using the given ethers provider.
-   * @param chainId chain of the token
+   * @param StarknetChainId chain of the token
    * @param address address of the token on the chain
    * @param provider provider used to fetch the token
    * @param symbol optional symbol of the token
@@ -2270,13 +2275,15 @@ var Fetcher = /*#__PURE__*/function () {
    */
 
 
-  Fetcher.fetchTokenData = function fetchTokenData(chainId, address, provider, symbol, name) {
+  Fetcher.fetchTokenData = function fetchTokenData(StarknetChainId, address, provider, symbol, name) {
     try {
       if (provider === undefined) provider = new Provider({
-        network: NetworkNames[chainId]
+        sequencer: {
+          network: NetworkNames[StarknetChainId]
+        }
       });
-      return Promise.resolve(getDecimals(chainId, address, provider)).then(function (parsedDecimals) {
-        return new Token(chainId, address, parsedDecimals, symbol, name);
+      return Promise.resolve(getDecimals(StarknetChainId, address, provider)).then(function (parsedDecimals) {
+        return new Token(StarknetChainId, address, parsedDecimals, symbol, name);
       });
     } catch (e) {
       return Promise.reject(e);
@@ -2293,7 +2300,9 @@ var Fetcher = /*#__PURE__*/function () {
   Fetcher.fetchPairData = function fetchPairData(tokenA, tokenB, provider) {
     try {
       if (provider === undefined) provider = new Provider({
-        network: NetworkNames[tokenA.chainId]
+        sequencer: {
+          network: NetworkNames[tokenA.chainId]
+        }
       });
       !(tokenA.chainId === tokenB.chainId) ? process.env.NODE_ENV !== "production" ? invariant(false, 'CHAIN_ID') : invariant(false) : void 0;
       var address = Pair.getAddress(tokenA, tokenB);
@@ -2311,5 +2320,5 @@ var Fetcher = /*#__PURE__*/function () {
   return Fetcher;
 }();
 
-export { CONTRACT_ADDRESS_PREFIX, FACTORY_ADDRESSES, FEES_DENOMINATOR, FEES_NUMERATOR, FIVE, Fetcher, Fraction, InsufficientInputAmountError, InsufficientReservesError, MINIMUM_LIQUIDITY, ONE, PAIR_CONTRACT_CLASS_HASH, Pair, Percent, Price, Rounding, Route, Router, SOLIDITY_TYPE_MAXIMA, SolidityType, TEN, THREE, TWO, Token, TokenAmount, Trade, TradeType, ZERO, _100, currencyEquals, getPairAddress, inputOutputComparator, isEqualAddress, parseBigintIsh, sortedInsert, sortsBefore, sqrt, tradeComparator, validateAndParseAddress, validateSolidityTypeInstance };
+export { CONTRACT_ADDRESS_PREFIX, FACTORY_ADDRESSES, FEES_DENOMINATOR, FEES_NUMERATOR, FIVE, Fetcher, Fraction, InsufficientInputAmountError, InsufficientReservesError, MINIMUM_LIQUIDITY, ONE, PAIR_CONTRACT_CLASS_HASH, Pair, Percent, Price, Rounding, Route, Router, SOLIDITY_TYPE_MAXIMA, SolidityType, StarknetChainId, TEN, THREE, TWO, Token, TokenAmount, Trade, TradeType, ZERO, _100, currencyEquals, getPairAddress, inputOutputComparator, isEqualAddress, parseBigintIsh, sortedInsert, sortsBefore, sqrt, tradeComparator, validateAndParseAddress, validateSolidityTypeInstance };
 //# sourceMappingURL=l0k_swap-sdk.esm.js.map

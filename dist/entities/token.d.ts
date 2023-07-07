@@ -1,4 +1,4 @@
-import { ChainId } from '../constants';
+import { StarknetChainId } from '../constants';
 /**
  * Represents an ERC20 token with a unique address and some metadata.
  */
@@ -6,9 +6,9 @@ export declare class Token {
     readonly decimals: number;
     readonly symbol?: string;
     readonly name?: string;
-    readonly chainId: ChainId;
+    readonly chainId: StarknetChainId;
     readonly address: string;
-    constructor(chainId: ChainId, address: string, decimals: number, symbol?: string, name?: string);
+    constructor(chainId: StarknetChainId, address: string, decimals: number, symbol?: string, name?: string);
     /**
      * Returns true if the two tokens are equivalent, i.e. have the same chainId and address.
      * @param other other token to compare

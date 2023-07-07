@@ -1,7 +1,9 @@
 import JSBI from 'jsbi';
-import { StarknetChainId } from 'starknet/constants';
+export declare enum StarknetChainId {
+    MAINNET = "SN_MAIN",
+    TESTNET = "SN_GOERLI"
+}
 export declare type BigintIsh = JSBI | bigint | string;
-export { StarknetChainId as ChainId } from 'starknet/constants';
 export declare enum TradeType {
     EXACT_INPUT = 0,
     EXACT_OUTPUT = 1

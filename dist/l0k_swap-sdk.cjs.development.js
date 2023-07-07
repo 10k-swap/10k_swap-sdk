@@ -6,16 +6,10 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var JSBI = _interopDefault(require('jsbi'));
 var invariant = _interopDefault(require('tiny-invariant'));
-var shortString = require('starknet/utils/shortString');
-var constants = require('starknet/constants');
-var number = require('starknet/utils/number');
-var hash = require('starknet/dist/utils/hash');
-var address = require('starknet/utils/address');
+var starknet = require('starknet');
 var toFormat = _interopDefault(require('toformat'));
 var _Decimal = _interopDefault(require('decimal.js-light'));
 var _Big = _interopDefault(require('big.js'));
-var uint256 = require('starknet/dist/utils/uint256');
-var starknet = require('starknet');
 
 function _defineProperties(target, props) {
   for (var i = 0; i < props.length; i++) {
@@ -233,6 +227,12 @@ var InsufficientInputAmountError = /*#__PURE__*/function (_Error2) {
 }( /*#__PURE__*/_wrapNativeSuper(Error));
 
 var _SOLIDITY_TYPE_MAXIMA, _FACTORY_ADDRESSES;
+var encodeShortString = starknet.shortString.encodeShortString;
+
+(function (StarknetChainId) {
+  StarknetChainId["MAINNET"] = "SN_MAIN";
+  StarknetChainId["TESTNET"] = "SN_GOERLI";
+})(exports.StarknetChainId || (exports.StarknetChainId = {}));
 
 (function (TradeType) {
   TradeType[TradeType["EXACT_INPUT"] = 0] = "EXACT_INPUT";
@@ -264,21 +264,24 @@ var FEES_DENOMINATOR = /*#__PURE__*/JSBI.BigInt(10000);
 
 var SOLIDITY_TYPE_MAXIMA = (_SOLIDITY_TYPE_MAXIMA = {}, _SOLIDITY_TYPE_MAXIMA[exports.SolidityType.uint8] = /*#__PURE__*/JSBI.BigInt('0xff'), _SOLIDITY_TYPE_MAXIMA[exports.SolidityType.uint256] = /*#__PURE__*/JSBI.BigInt('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'), _SOLIDITY_TYPE_MAXIMA);
 var PAIR_CONTRACT_CLASS_HASH = '0x231adde42526bad434ca2eb983efdd64472638702f87f97e6e3c084f264e06f';
-var FACTORY_ADDRESSES = (_FACTORY_ADDRESSES = {}, _FACTORY_ADDRESSES[constants.StarknetChainId.MAINNET] = '0x01c0a36e26a8f822e0d81f20a5a562b16a8f8a3dfd99801367dd2aea8f1a87a2', _FACTORY_ADDRESSES[constants.StarknetChainId.TESTNET] = '0x06c31f39524388c982045988de3788530605ed08b10389def2e7b1dd09d19308', _FACTORY_ADDRESSES);
-var CONTRACT_ADDRESS_PREFIX = /*#__PURE__*/shortString.encodeShortString('STARKNET_CONTRACT_ADDRESS');
+var FACTORY_ADDRESSES = (_FACTORY_ADDRESSES = {}, _FACTORY_ADDRESSES[exports.StarknetChainId.MAINNET] = '0x01c0a36e26a8f822e0d81f20a5a562b16a8f8a3dfd99801367dd2aea8f1a87a2', _FACTORY_ADDRESSES[exports.StarknetChainId.TESTNET] = '0x06c31f39524388c982045988de3788530605ed08b10389def2e7b1dd09d19308', _FACTORY_ADDRESSES);
+var CONTRACT_ADDRESS_PREFIX = /*#__PURE__*/encodeShortString('STARKNET_CONTRACT_ADDRESS');
 
+var toBN = starknet.number.toBN;
+var computeHashOnElements = starknet.hash.computeHashOnElements,
+    pedersen = starknet.hash.pedersen;
 function validateSolidityTypeInstance(value, solidityType) {
   !JSBI.greaterThanOrEqual(value, ZERO) ?  invariant(false, value + " is not a " + solidityType + ".")  : void 0;
   !JSBI.lessThanOrEqual(value, SOLIDITY_TYPE_MAXIMA[solidityType]) ?  invariant(false, value + " is not a " + solidityType + ".")  : void 0;
 } // warns if addresses are not checksummed
 
-function validateAndParseAddress(address$1) {
+function validateAndParseAddress(address) {
   try {
-    var checksummedAddress = address.validateAndParseAddress(address$1); // warning(address === checksummedAddress, `${address} is not checksummed.`)
+    var checksummedAddress = starknet.validateAndParseAddress(address); // warning(address === checksummedAddress, `${address} is not checksummed.`)
 
     return checksummedAddress;
   } catch (error) {
-      invariant(false, address$1 + " is not a valid address.")  ;
+      invariant(false, address + " is not a valid address.")  ;
   }
 }
 function parseBigintIsh(bigintIsh) {
@@ -343,15 +346,15 @@ function sortedInsert(items, add, maxSize, comparator) {
 function getPairAddress(tokenA, tokenB) {
   var tokens = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]; // does safety checksr
 
-  var salt = hash.pedersen([tokens[0].address, tokens[1].address]);
-  var constructorCalldataHash = hash.computeHashOnElements([]);
-  return hash.computeHashOnElements([CONTRACT_ADDRESS_PREFIX, FACTORY_ADDRESSES[tokenA.chainId], salt, PAIR_CONTRACT_CLASS_HASH, constructorCalldataHash]);
+  var salt = pedersen([tokens[0].address, tokens[1].address]);
+  var constructorCalldataHash = computeHashOnElements([]);
+  return computeHashOnElements([CONTRACT_ADDRESS_PREFIX, FACTORY_ADDRESSES[tokenA.chainId], salt, PAIR_CONTRACT_CLASS_HASH, constructorCalldataHash]);
 }
 function isEqualAddress(addressA, addressB) {
-  return number.toBN(addressA).eq(number.toBN(addressB));
+  return starknet.number.toBN(addressA).eq(starknet.number.toBN(addressB));
 }
 function sortsBefore(addressA, addressB) {
-  return number.toBN(addressA).lt(number.toBN(addressB));
+  return toBN(addressA).lt(toBN(addressB));
 }
 
 /**
@@ -1282,6 +1285,7 @@ var Trade = /*#__PURE__*/function () {
   return Trade;
 }();
 
+var bnToUint256 = starknet.uint256.bnToUint256;
 /**
  * Represents the Uniswap V2 Router, and has static methods for helping execute trades.
  */
@@ -1301,8 +1305,8 @@ var Router = /*#__PURE__*/function () {
   Router.swapCallParameters = function swapCallParameters(trade, options) {
     !(options.ttl > 0) ?  invariant(false, 'TTL')  : void 0;
     var to = options.recipient;
-    var amountIn = uint256.bnToUint256(trade.maximumAmountIn(options.allowedSlippage).raw.toString());
-    var amountOut = uint256.bnToUint256(trade.minimumAmountOut(options.allowedSlippage).raw.toString());
+    var amountIn = bnToUint256(trade.maximumAmountIn(options.allowedSlippage).raw.toString());
+    var amountOut = bnToUint256(trade.minimumAmountOut(options.allowedSlippage).raw.toString());
     var path = trade.route.path.map(function (token) {
       return token.address;
     });
@@ -2230,12 +2234,12 @@ var ERC20 = [
 
 var _NetworkNames, _TOKEN_DECIMALS_CACHE;
 
-var getDecimals = function getDecimals(chainId, address, provider) {
+var getDecimals = function getDecimals(StarknetChainId, address, provider) {
   try {
     var _TOKEN_DECIMALS_CACHE2, _TOKEN_DECIMALS_CACHE3;
 
-    if (typeof ((_TOKEN_DECIMALS_CACHE2 = TOKEN_DECIMALS_CACHE) === null || _TOKEN_DECIMALS_CACHE2 === void 0 ? void 0 : (_TOKEN_DECIMALS_CACHE3 = _TOKEN_DECIMALS_CACHE2[chainId]) === null || _TOKEN_DECIMALS_CACHE3 === void 0 ? void 0 : _TOKEN_DECIMALS_CACHE3[address]) === 'number') {
-      return Promise.resolve(TOKEN_DECIMALS_CACHE[chainId][address]);
+    if (typeof ((_TOKEN_DECIMALS_CACHE2 = TOKEN_DECIMALS_CACHE) === null || _TOKEN_DECIMALS_CACHE2 === void 0 ? void 0 : (_TOKEN_DECIMALS_CACHE3 = _TOKEN_DECIMALS_CACHE2[StarknetChainId]) === null || _TOKEN_DECIMALS_CACHE3 === void 0 ? void 0 : _TOKEN_DECIMALS_CACHE3[address]) === 'number') {
+      return Promise.resolve(TOKEN_DECIMALS_CACHE[StarknetChainId][address]);
     }
 
     var contract = new starknet.Contract(ERC20, address, provider);
@@ -2243,15 +2247,15 @@ var getDecimals = function getDecimals(chainId, address, provider) {
       var _TOKEN_DECIMALS_CACHE4, _extends2, _extends3;
 
       var decimals = _ref2.decimals;
-      TOKEN_DECIMALS_CACHE = _extends({}, TOKEN_DECIMALS_CACHE, (_extends3 = {}, _extends3[chainId] = _extends({}, (_TOKEN_DECIMALS_CACHE4 = TOKEN_DECIMALS_CACHE) === null || _TOKEN_DECIMALS_CACHE4 === void 0 ? void 0 : _TOKEN_DECIMALS_CACHE4[chainId], (_extends2 = {}, _extends2[address] = decimals.toNumber(), _extends2)), _extends3));
+      TOKEN_DECIMALS_CACHE = _extends({}, TOKEN_DECIMALS_CACHE, (_extends3 = {}, _extends3[StarknetChainId] = _extends({}, (_TOKEN_DECIMALS_CACHE4 = TOKEN_DECIMALS_CACHE) === null || _TOKEN_DECIMALS_CACHE4 === void 0 ? void 0 : _TOKEN_DECIMALS_CACHE4[StarknetChainId], (_extends2 = {}, _extends2[address] = decimals.toNumber(), _extends2)), _extends3));
       return decimals.toNumber();
     });
   } catch (e) {
     return Promise.reject(e);
   }
 };
-var NetworkNames = (_NetworkNames = {}, _NetworkNames[constants.StarknetChainId.MAINNET] = 'mainnet-alpha', _NetworkNames[constants.StarknetChainId.TESTNET] = 'goerli-alpha', _NetworkNames);
-var TOKEN_DECIMALS_CACHE = (_TOKEN_DECIMALS_CACHE = {}, _TOKEN_DECIMALS_CACHE[constants.StarknetChainId.TESTNET] = {
+var NetworkNames = (_NetworkNames = {}, _NetworkNames[exports.StarknetChainId.MAINNET] = 'mainnet-alpha', _NetworkNames[exports.StarknetChainId.TESTNET] = 'goerli-alpha', _NetworkNames);
+var TOKEN_DECIMALS_CACHE = (_TOKEN_DECIMALS_CACHE = {}, _TOKEN_DECIMALS_CACHE[exports.StarknetChainId.TESTNET] = {
   '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7': 18 // ETH
 
 }, _TOKEN_DECIMALS_CACHE);
@@ -2262,7 +2266,7 @@ var Fetcher = /*#__PURE__*/function () {
   function Fetcher() {}
   /**
    * Fetch information for a given token on the given chain, using the given ethers provider.
-   * @param chainId chain of the token
+   * @param StarknetChainId chain of the token
    * @param address address of the token on the chain
    * @param provider provider used to fetch the token
    * @param symbol optional symbol of the token
@@ -2270,13 +2274,15 @@ var Fetcher = /*#__PURE__*/function () {
    */
 
 
-  Fetcher.fetchTokenData = function fetchTokenData(chainId, address, provider, symbol, name) {
+  Fetcher.fetchTokenData = function fetchTokenData(StarknetChainId, address, provider, symbol, name) {
     try {
       if (provider === undefined) provider = new starknet.Provider({
-        network: NetworkNames[chainId]
+        sequencer: {
+          network: NetworkNames[StarknetChainId]
+        }
       });
-      return Promise.resolve(getDecimals(chainId, address, provider)).then(function (parsedDecimals) {
-        return new Token(chainId, address, parsedDecimals, symbol, name);
+      return Promise.resolve(getDecimals(StarknetChainId, address, provider)).then(function (parsedDecimals) {
+        return new Token(StarknetChainId, address, parsedDecimals, symbol, name);
       });
     } catch (e) {
       return Promise.reject(e);
@@ -2293,7 +2299,9 @@ var Fetcher = /*#__PURE__*/function () {
   Fetcher.fetchPairData = function fetchPairData(tokenA, tokenB, provider) {
     try {
       if (provider === undefined) provider = new starknet.Provider({
-        network: NetworkNames[tokenA.chainId]
+        sequencer: {
+          network: NetworkNames[tokenA.chainId]
+        }
       });
       !(tokenA.chainId === tokenB.chainId) ? "development" !== "production" ? invariant(false, 'CHAIN_ID') : invariant(false) : void 0;
       var address = Pair.getAddress(tokenA, tokenB);
@@ -2312,12 +2320,6 @@ var Fetcher = /*#__PURE__*/function () {
 }();
 
 exports.JSBI = JSBI;
-Object.defineProperty(exports, 'ChainId', {
-  enumerable: true,
-  get: function () {
-    return constants.StarknetChainId;
-  }
-});
 exports.CONTRACT_ADDRESS_PREFIX = CONTRACT_ADDRESS_PREFIX;
 exports.FACTORY_ADDRESSES = FACTORY_ADDRESSES;
 exports.FEES_DENOMINATOR = FEES_DENOMINATOR;

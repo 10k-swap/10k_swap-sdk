@@ -1,6 +1,6 @@
 import invariant from 'tiny-invariant'
 
-import { ChainId, ONE, TradeType, ZERO } from '../constants'
+import {  StarknetChainId, ONE, TradeType, ZERO } from '../constants'
 import { sortedInsert } from '../utils'
 import { Fraction } from './fractions/fraction'
 import { Percent } from './fractions/percent'
@@ -222,7 +222,7 @@ export class Trade {
     invariant(pairs.length > 0, 'PAIRS')
     invariant(maxHops > 0, 'MAX_HOPS')
     invariant(originalAmountIn === currencyAmountIn || currentPairs.length > 0, 'INVALID_RECURSION')
-    const chainId: ChainId | undefined =
+    const chainId: StarknetChainId | undefined =
       currencyAmountIn instanceof TokenAmount ? currencyAmountIn.token.chainId : currencyOut instanceof Token ? currencyOut.chainId : undefined
     invariant(chainId !== undefined, 'CHAIN_ID')
 
@@ -302,7 +302,7 @@ export class Trade {
     invariant(pairs.length > 0, 'PAIRS')
     invariant(maxHops > 0, 'MAX_HOPS')
     invariant(originalAmountOut === currencyAmountOut || currentPairs.length > 0, 'INVALID_RECURSION')
-    const chainId: ChainId | undefined =
+    const chainId: StarknetChainId | undefined =
       currencyAmountOut instanceof TokenAmount ? currencyAmountOut.token.chainId : currencyIn instanceof Token ? currencyIn.chainId : undefined
     invariant(chainId !== undefined, 'CHAIN_ID')
 
