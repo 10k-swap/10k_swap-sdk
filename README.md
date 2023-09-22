@@ -15,7 +15,7 @@ To run code from the SDK in your application, use an `import` or `require` state
 ## ES6 (import)
 
 ```typescript
-import { StarknetChainId } from '10k_swap-sdk'
+import { StarknetChainId } from 'l0k_swap-sdk'
 console.log(`The chainId of mainnet is ${StarknetChainId.MAINNET}.`)
 // The chainId of mainnet is 0x534e5f4d41494e.
 ```
@@ -23,7 +23,7 @@ console.log(`The chainId of mainnet is ${StarknetChainId.MAINNET}.`)
 ## CommonJS (require)
 
 ```typescript
-const L0KSWAP = require('10k_swap-sdk')
+const L0KSWAP = require('l0k_swap-sdk')
 console.log(`The chainId of mainnet is ${L0KSWAP.StarknetChainId.MAINNET}.`)
 // The chainId of mainnet is 0x534e5f4d41494e.
 ```
