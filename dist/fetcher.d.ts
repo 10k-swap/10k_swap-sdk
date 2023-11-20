@@ -1,4 +1,4 @@
-import { Provider } from 'starknet';
+import { RpcProvider } from 'starknet-v5';
 import { Pair } from './entities/pair';
 import { StarknetChainId } from './constants';
 import { Token } from './entities/token';
@@ -18,12 +18,12 @@ export declare abstract class Fetcher {
      * @param symbol optional symbol of the token
      * @param name optional name of the token
      */
-    static fetchTokenData(StarknetChainId: StarknetChainId, address: string, provider?: Provider, symbol?: string, name?: string): Promise<Token>;
+    static fetchTokenData(starknetChainId: StarknetChainId, address: string, provider?: RpcProvider, symbol?: string, name?: string): Promise<Token>;
     /**
      * Fetches information about a pair and constructs a pair from the given two tokens.
      * @param tokenA first token
      * @param tokenB second token
      * @param provider the provider to use to fetch the data
      */
-    static fetchPairData(tokenA: Token, tokenB: Token, provider?: Provider): Promise<Pair>;
+    static fetchPairData(tokenA: Token, tokenB: Token, provider?: RpcProvider): Promise<Pair>;
 }

@@ -1,12 +1,12 @@
 import invariant from 'tiny-invariant'
-import { ChainId, TradeType, Rounding, Token, TokenAmount, Pair, Route, Trade } from '../src'
+import { StarknetChainId, TradeType, Rounding, Token, TokenAmount, Pair, Route, Trade } from '../src'
 
 const ADDRESSES = [
   '0x0000000000000000000000000000000000000000000000000000000000000001',
   '0x0000000000000000000000000000000000000000000000000000000000000002',
   '0x0000000000000000000000000000000000000000000000000000000000000003'
 ]
-const CHAIN_ID = ChainId.TESTNET
+const CHAIN_ID = StarknetChainId.TESTNET
 const DECIMAL_PERMUTATIONS: [number, number, number][] = [
   [0, 0, 0],
   [0, 9, 18],

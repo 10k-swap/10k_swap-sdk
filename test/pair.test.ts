@@ -1,9 +1,9 @@
-import { ChainId, Token, Pair, TokenAmount, Price } from '../src'
+import { StarknetChainId, Token, Pair, TokenAmount, Price } from '../src'
 
 describe('Pair', () => {
-  const USDC = new Token(ChainId.TESTNET, '0x005a643907b9a4bc6a55e9069c4fd5fd1f5c79a22470690f75556c4736e34426', 6, 'USDC', 'USD Coin')
-  const DAI = new Token(ChainId.TESTNET, '0x03e85bfbb8e2a42b7bead9e88e9a1b19dbccf661471061807292120462396ec9', 18, 'DAI', 'DAI Stablecoin')
-  const ETH = new Token(ChainId.MAINNET, '0x29e407b9a95f8990eccd2baeb9645ddd165ee547ae6aebb1c9c0220c77ef065', 18, 'ETH')
+  const USDC = new Token(StarknetChainId.TESTNET, '0x005a643907b9a4bc6a55e9069c4fd5fd1f5c79a22470690f75556c4736e34426', 6, 'USDC', 'USD Coin')
+  const DAI = new Token(StarknetChainId.TESTNET, '0x03e85bfbb8e2a42b7bead9e88e9a1b19dbccf661471061807292120462396ec9', 18, 'DAI', 'DAI Stablecoin')
+  const ETH = new Token(StarknetChainId.MAINNET, '0x29e407b9a95f8990eccd2baeb9645ddd165ee547ae6aebb1c9c0220c77ef065', 18, 'ETH')
 
   describe('constructor', () => {
     it('cannot be used for tokens on different chains', () => {
@@ -81,8 +81,8 @@ describe('Pair', () => {
 
   describe('#chainId', () => {
     it('returns the token0 chainId', () => {
-      expect(new Pair(new TokenAmount(USDC, '100'), new TokenAmount(DAI, '100')).chainId).toEqual(ChainId.TESTNET)
-      expect(new Pair(new TokenAmount(DAI, '100'), new TokenAmount(USDC, '100')).chainId).toEqual(ChainId.TESTNET)
+      expect(new Pair(new TokenAmount(USDC, '100'), new TokenAmount(DAI, '100')).chainId).toEqual(StarknetChainId.TESTNET)
+      expect(new Pair(new TokenAmount(DAI, '100'), new TokenAmount(USDC, '100')).chainId).toEqual(StarknetChainId.TESTNET)
     })
   })
   describe('#involvesToken', () => {

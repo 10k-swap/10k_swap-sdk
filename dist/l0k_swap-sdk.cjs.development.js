@@ -10,6 +10,7 @@ var starknet = require('starknet');
 var toFormat = _interopDefault(require('toformat'));
 var _Decimal = _interopDefault(require('decimal.js-light'));
 var _Big = _interopDefault(require('big.js'));
+var starknetV5 = require('starknet-v5');
 
 function _defineProperties(target, props) {
   for (var i = 0; i < props.length; i++) {
@@ -2232,7 +2233,7 @@ var ERC20 = [
 	}
 ];
 
-var _NetworkNames, _TOKEN_DECIMALS_CACHE;
+var _TOKEN_DECIMALS_CACHE;
 
 var getDecimals = function getDecimals(StarknetChainId, address, provider) {
   try {
@@ -2242,19 +2243,21 @@ var getDecimals = function getDecimals(StarknetChainId, address, provider) {
       return Promise.resolve(TOKEN_DECIMALS_CACHE[StarknetChainId][address]);
     }
 
-    var contract = new starknet.Contract(ERC20, address, provider);
+    var contract = new starknetV5.Contract(ERC20, address, provider);
     return Promise.resolve(contract.call('decimals')).then(function (_ref2) {
       var _TOKEN_DECIMALS_CACHE4, _extends2, _extends3;
 
       var decimals = _ref2.decimals;
-      TOKEN_DECIMALS_CACHE = _extends({}, TOKEN_DECIMALS_CACHE, (_extends3 = {}, _extends3[StarknetChainId] = _extends({}, (_TOKEN_DECIMALS_CACHE4 = TOKEN_DECIMALS_CACHE) === null || _TOKEN_DECIMALS_CACHE4 === void 0 ? void 0 : _TOKEN_DECIMALS_CACHE4[StarknetChainId], (_extends2 = {}, _extends2[address] = decimals.toNumber(), _extends2)), _extends3));
-      return decimals.toNumber();
+
+      var _decimals = parseInt(decimals.toString());
+
+      TOKEN_DECIMALS_CACHE = _extends({}, TOKEN_DECIMALS_CACHE, (_extends3 = {}, _extends3[StarknetChainId] = _extends({}, (_TOKEN_DECIMALS_CACHE4 = TOKEN_DECIMALS_CACHE) === null || _TOKEN_DECIMALS_CACHE4 === void 0 ? void 0 : _TOKEN_DECIMALS_CACHE4[StarknetChainId], (_extends2 = {}, _extends2[address] = _decimals, _extends2)), _extends3));
+      return _decimals;
     });
   } catch (e) {
     return Promise.reject(e);
   }
 };
-var NetworkNames = (_NetworkNames = {}, _NetworkNames[exports.StarknetChainId.MAINNET] = 'mainnet-alpha', _NetworkNames[exports.StarknetChainId.TESTNET] = 'goerli-alpha', _NetworkNames);
 var TOKEN_DECIMALS_CACHE = (_TOKEN_DECIMALS_CACHE = {}, _TOKEN_DECIMALS_CACHE[exports.StarknetChainId.TESTNET] = {
   '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7': 18 // ETH
 
@@ -2274,15 +2277,13 @@ var Fetcher = /*#__PURE__*/function () {
    */
 
 
-  Fetcher.fetchTokenData = function fetchTokenData(StarknetChainId, address, provider, symbol, name) {
+  Fetcher.fetchTokenData = function fetchTokenData(starknetChainId, address, provider, symbol, name) {
     try {
-      if (provider === undefined) provider = new starknet.Provider({
-        sequencer: {
-          network: NetworkNames[StarknetChainId]
-        }
+      if (provider === undefined) provider = new starknetV5.RpcProvider({
+        nodeUrl: starknetChainId
       });
-      return Promise.resolve(getDecimals(StarknetChainId, address, provider)).then(function (parsedDecimals) {
-        return new Token(StarknetChainId, address, parsedDecimals, symbol, name);
+      return Promise.resolve(getDecimals(starknetChainId, address, provider)).then(function (parsedDecimals) {
+        return new Token(starknetChainId, address, parsedDecimals, symbol, name);
       });
     } catch (e) {
       return Promise.reject(e);
@@ -2298,14 +2299,12 @@ var Fetcher = /*#__PURE__*/function () {
 
   Fetcher.fetchPairData = function fetchPairData(tokenA, tokenB, provider) {
     try {
-      if (provider === undefined) provider = new starknet.Provider({
-        sequencer: {
-          network: NetworkNames[tokenA.chainId]
-        }
+      if (provider === undefined) provider = new starknetV5.RpcProvider({
+        nodeUrl: tokenA.chainId
       });
       !(tokenA.chainId === tokenB.chainId) ? "development" !== "production" ? invariant(false, 'CHAIN_ID') : invariant(false) : void 0;
       var address = Pair.getAddress(tokenA, tokenB);
-      return Promise.resolve(new starknet.Contract(l0kPairAbi, address, provider).call('getReserves', [])).then(function (_ref) {
+      return Promise.resolve(new starknetV5.Contract(l0kPairAbi, address, provider).call('getReserves', [])).then(function (_ref) {
         var reserve0 = _ref.reserve0,
             reserve1 = _ref.reserve1;
         var balances = tokenA.sortsBefore(tokenB) ? [reserve0, reserve1] : [reserve0, reserve1];

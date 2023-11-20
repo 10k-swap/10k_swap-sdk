@@ -1,10 +1,11 @@
 import JSBI from 'jsbi';
 export { default as JSBI } from 'jsbi';
 import invariant from 'tiny-invariant';
-import { shortString, validateAndParseAddress as validateAndParseAddress$1, number, hash, uint256, Provider, Contract } from 'starknet';
+import { shortString, validateAndParseAddress as validateAndParseAddress$1, number, hash, uint256 } from 'starknet';
 import toFormat from 'toformat';
 import _Decimal from 'decimal.js-light';
 import _Big from 'big.js';
+import { RpcProvider, Contract } from 'starknet-v5';
 
 function _defineProperties(target, props) {
   for (var i = 0; i < props.length; i++) {
@@ -2233,7 +2234,7 @@ var ERC20 = [
 	}
 ];
 
-var _NetworkNames, _TOKEN_DECIMALS_CACHE;
+var _TOKEN_DECIMALS_CACHE;
 
 var getDecimals = function getDecimals(StarknetChainId, address, provider) {
   try {
@@ -2248,14 +2249,16 @@ var getDecimals = function getDecimals(StarknetChainId, address, provider) {
       var _TOKEN_DECIMALS_CACHE4, _extends2, _extends3;
 
       var decimals = _ref2.decimals;
-      TOKEN_DECIMALS_CACHE = _extends({}, TOKEN_DECIMALS_CACHE, (_extends3 = {}, _extends3[StarknetChainId] = _extends({}, (_TOKEN_DECIMALS_CACHE4 = TOKEN_DECIMALS_CACHE) === null || _TOKEN_DECIMALS_CACHE4 === void 0 ? void 0 : _TOKEN_DECIMALS_CACHE4[StarknetChainId], (_extends2 = {}, _extends2[address] = decimals.toNumber(), _extends2)), _extends3));
-      return decimals.toNumber();
+
+      var _decimals = parseInt(decimals.toString());
+
+      TOKEN_DECIMALS_CACHE = _extends({}, TOKEN_DECIMALS_CACHE, (_extends3 = {}, _extends3[StarknetChainId] = _extends({}, (_TOKEN_DECIMALS_CACHE4 = TOKEN_DECIMALS_CACHE) === null || _TOKEN_DECIMALS_CACHE4 === void 0 ? void 0 : _TOKEN_DECIMALS_CACHE4[StarknetChainId], (_extends2 = {}, _extends2[address] = _decimals, _extends2)), _extends3));
+      return _decimals;
     });
   } catch (e) {
     return Promise.reject(e);
   }
 };
-var NetworkNames = (_NetworkNames = {}, _NetworkNames[StarknetChainId.MAINNET] = 'mainnet-alpha', _NetworkNames[StarknetChainId.TESTNET] = 'goerli-alpha', _NetworkNames);
 var TOKEN_DECIMALS_CACHE = (_TOKEN_DECIMALS_CACHE = {}, _TOKEN_DECIMALS_CACHE[StarknetChainId.TESTNET] = {
   '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7': 18 // ETH
 
@@ -2275,15 +2278,13 @@ var Fetcher = /*#__PURE__*/function () {
    */
 
 
-  Fetcher.fetchTokenData = function fetchTokenData(StarknetChainId, address, provider, symbol, name) {
+  Fetcher.fetchTokenData = function fetchTokenData(starknetChainId, address, provider, symbol, name) {
     try {
-      if (provider === undefined) provider = new Provider({
-        sequencer: {
-          network: NetworkNames[StarknetChainId]
-        }
+      if (provider === undefined) provider = new RpcProvider({
+        nodeUrl: starknetChainId
       });
-      return Promise.resolve(getDecimals(StarknetChainId, address, provider)).then(function (parsedDecimals) {
-        return new Token(StarknetChainId, address, parsedDecimals, symbol, name);
+      return Promise.resolve(getDecimals(starknetChainId, address, provider)).then(function (parsedDecimals) {
+        return new Token(starknetChainId, address, parsedDecimals, symbol, name);
       });
     } catch (e) {
       return Promise.reject(e);
@@ -2299,10 +2300,8 @@ var Fetcher = /*#__PURE__*/function () {
 
   Fetcher.fetchPairData = function fetchPairData(tokenA, tokenB, provider) {
     try {
-      if (provider === undefined) provider = new Provider({
-        sequencer: {
-          network: NetworkNames[tokenA.chainId]
-        }
+      if (provider === undefined) provider = new RpcProvider({
+        nodeUrl: tokenA.chainId
       });
       !(tokenA.chainId === tokenB.chainId) ? process.env.NODE_ENV !== "production" ? invariant(false, 'CHAIN_ID') : invariant(false) : void 0;
       var address = Pair.getAddress(tokenA, tokenB);

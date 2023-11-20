@@ -19,6 +19,7 @@
     "decimal.js-light": "^2.5.1",
     "jsbi": "^4.3.0",
     "starknet": "^4.22.0",
+    "starknet-v5":"npm:starknet@5.24.2",
     "tiny-invariant": "^1.2.0",
     "tiny-warning": "^1.0.3",
     "toformat": "^2.0.0"
