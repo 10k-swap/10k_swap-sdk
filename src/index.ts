@@ -1,3 +1,6 @@
+import { TextEncoder, TextDecoder } from 'util'
+Object.assign(global, { TextDecoder, TextEncoder })
+
 import JSBI from 'jsbi'
 export { JSBI }
 
