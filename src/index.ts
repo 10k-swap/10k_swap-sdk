@@ -1,6 +1,3 @@
-import { TextEncoder, TextDecoder } from 'util'
-typeof global !== 'undefined' && Object.assign(global, { TextDecoder, TextEncoder })
-
 import JSBI from 'jsbi'
 export { JSBI }
 

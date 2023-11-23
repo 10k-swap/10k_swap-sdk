@@ -1,4 +1,3 @@
-import { TextDecoder, TextEncoder } from 'util';
 import JSBI from 'jsbi';
 export { default as JSBI } from 'jsbi';
 import invariant from 'tiny-invariant';
@@ -2319,11 +2318,6 @@ var Fetcher = /*#__PURE__*/function () {
 
   return Fetcher;
 }();
-
-typeof global !== 'undefined' && Object.assign(global, {
-  TextDecoder: TextDecoder,
-  TextEncoder: TextEncoder
-});
 
 export { CONTRACT_ADDRESS_PREFIX, FACTORY_ADDRESSES, FEES_DENOMINATOR, FEES_NUMERATOR, FIVE, Fetcher, Fraction, InsufficientInputAmountError, InsufficientReservesError, MINIMUM_LIQUIDITY, ONE, PAIR_CONTRACT_CLASS_HASH, Pair, Percent, Price, Rounding, Route, Router, SOLIDITY_TYPE_MAXIMA, SolidityType, StarknetChainId, TEN, THREE, TWO, Token, TokenAmount, Trade, TradeType, ZERO, _100, currencyEquals, getPairAddress, inputOutputComparator, isEqualAddress, parseBigintIsh, sortedInsert, sortsBefore, sqrt, tradeComparator, validateAndParseAddress, validateSolidityTypeInstance };
 //# sourceMappingURL=l0k_swap-sdk.esm.js.map
