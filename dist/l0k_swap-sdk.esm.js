@@ -2320,7 +2320,7 @@ var Fetcher = /*#__PURE__*/function () {
   return Fetcher;
 }();
 
-global && Object.assign(global, {
+typeof global !== 'undefined' && Object.assign(global, {
   TextDecoder: TextDecoder,
   TextEncoder: TextEncoder
 });
