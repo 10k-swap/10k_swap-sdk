@@ -2319,7 +2319,7 @@ var Fetcher = /*#__PURE__*/function () {
   return Fetcher;
 }();
 
-Object.assign(global, {
+global && Object.assign(global, {
   TextDecoder: util.TextDecoder,
   TextEncoder: util.TextEncoder
 });
